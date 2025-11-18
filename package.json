@@ -21,10 +21,11 @@
     "tmcsplit.js",
     "tmcsplit",
     "fs-worker.js",
-    "fs-worker.webpack.config.js",
+    "fs-worker.webpack.config.cjs",
     "index.html",
     "serve.json",
-    "webpack.config.js"
+    "libtmcsplit.webpack.config.cjs",
+    "webpack.config.cjs"
   ],
   "keywords": [
     "ur",
