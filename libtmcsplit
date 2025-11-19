@@ -65,50 +65,58 @@ async function
     _file,
     _msg,
     _worker;
-  _dir =
-    "/test_dir";
-  _file =
-    `${_dir}/test_file`;
-  _content =
-    `${_target_message} ${_target_planet}`;
+  // _dir =
+  //   "/test_dir";
+  // _file =
+  //   `${_dir}/test_file`;
+  // _content =
+  //   `${_target_message} ${_target_planet}`;
   await _fs_worker_start(
       "fs-worker.js");
   _msg =
-    `Creating directory '${_dir}':`;
+    `Splitting '${_input_file}' ` +
+    `into '${chunks_amount}' of size '${_size_max}'` +
+    `into files with prefix '${_output_prefix}':`;
   _msg_info(
     _msg);
+  console.log(
+    _split_file);
   await _mkdir(
     _dir);
-  _downloaded_file =
-    await _file_download(
-      "")
-  console.log(
-    _downloaded_file);
   _msg =
-    `Writing content '${_content}' to file '${_file}':`;
+    `Downloading a file for testing.`;
   _msg_info(
     _msg);
-  _file_write(
-    _file,
-    _content);
-  _msg =
-    `Content of directory '/':`;
-  _msg_info(
-    _msg);
-  _dir_content =
-    _ls(
-      "/").unwrap();
-  console.log(
-    _dir_content);
-  _msg =
-    `Content of directory '${_dir}':`;
-  _msg_info(
-    _msg);
-  _dir_content =
-    _ls(
-      _dir).unwrap();
-  console.log(
-    _dir_content);
+  // _downloaded_file =
+  //   await _file_download(
+  //     "")
+  // console.log(
+  //   _downloaded_file);
+  // _msg =
+  //   `Writing content '${_content}' to file '${_file}':`;
+  // _msg_info(
+  //   _msg);
+  // _file_write(
+  //   _file,
+  //   _content);
+  // _msg =
+  //   `Content of directory '/':`;
+  // _msg_info(
+  //   _msg);
+  // _dir_content =
+  //   _ls(
+  //     "/").unwrap();
+  // console.log(
+  //   _dir_content);
+  // _msg =
+  //   `Content of directory '${_dir}':`;
+  // _msg_info(
+  //   _msg);
+  // _dir_content =
+  //   _ls(
+  //     _dir).unwrap();
+  // console.log(
+  //   _dir_content);
 }
 
 module.exports = {
