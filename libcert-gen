@@ -1,0 +1,251 @@
+#!/usr/bin/env node
+
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
+//    ----------------------------------------------------------------------
+//    Copyright © 2024, 2025  Pellegrino Prevete
+//
+//    All rights reserved
+//    ----------------------------------------------------------------------
+//
+//    This program is free software: you can redistribute it and/or modify
+//    it under the terms of the GNU Affero General Public License as published by
+//    the Free Software Foundation, either version 3 of the License, or
+//    (at your option) any later version.
+//
+//    This program is distributed in the hope that it will be useful,
+//    but WITHOUT ANY WARRANTY; without even the implied warranty of
+//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//    GNU Affero General Public License for more details.
+//
+//    You should have received a copy of the GNU Affero General Public License
+//    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+
+const
+  _forge_module =
+    require(
+      'node-forge');
+_pki =
+  _forge_module.pki;
+_rsa =
+  _pki.rsa;
+const
+  _libcrash =
+  require(
+    'crash-js');
+_error_display =
+  _libcrash._error_display;
+_ext_rm =
+  _libcrash._ext_rm;
+_file_read =
+  _libcrash._file_read;
+_file_write =
+  _libcrash._file_write;
+_fs_worker_start =
+  _libcrash._fs_worker_start;
+_json_read =
+  _libcrash._json_read;
+_ls =
+  _libcrash._ls;
+_mkdir =
+  _libcrash._mkdir;
+_msg_info =
+  _libcrash._msg_info;
+_msg_error =
+  _libcrash._msg_error;
+
+async function
+  _cert_gen(
+    _key_private,
+    _keys_length,
+    _serial_number,
+    _validity_min,
+    _validity_max,
+    _domain_name,
+    _country_name,
+    _state_name,
+    _locality_name,
+    _organization_name,
+    _organization_unit,
+    _output_file) {
+  let
+    _alt_names,
+    _attrs,
+    _basic_constraints,
+    _cert,
+    _ext_key_usage,
+    _key_usage,
+    _key_pem,
+    _keys,
+    _ns_cert_type,
+    _pem,
+    _subject_alt_name,
+    _subject_key_identifier;
+  _keys_length =
+    Number(
+      _keys_length);
+  if ( _key_private == "" ) ||
+     ( ! _file_exists(
+           _key_private) ) {
+    _keys =
+      _rsa.generateKeyPair(
+        _keys_length);
+  }
+  else {
+    _key_pem =
+      _file_read(
+        _key_private);
+    _keys =
+      { privateKey:
+          _file_read(
+            _key_private); }
+  }
+  _keys =
+    _rsa.generateKeyPair(
+      _keys_length);
+  _cert =
+    _pki.createCertificate();
+  _cert.publicKey =
+    _keys.publicKey;
+  _cert.serialNumber =
+    _serial_number;
+  _cert.validity.notBefore =
+    _validity_min;
+  _cert.validity.notAfter =
+    _validity_max;
+  _attrs = [
+    { name:
+        'commonName',
+      value:
+        _domain_name },
+    { name:
+        'countryName',
+      value:
+        _country_name },
+    { shortName:
+        'ST',
+      value:
+        _state_name },
+    { name:
+        'localityName',
+      value:
+        _locality_name },
+    { name:
+        'organizationName',
+      value:
+        _organization_name },
+    { shortName:
+        'OU',
+      value:
+        _organization_unit }
+  ];
+  _cert.setSubject(
+    _attrs);
+  _cert.setIssuer(
+    _attrs);
+  _basic_constraints =
+    { name:
+        "basicConstraints",
+      cA: 
+        true };
+  _key_usage =
+    { name:
+        "keyUsage",
+      keyCertSign: 
+        true,
+      digitalSignature: 
+        true,
+      nonRepudiation: 
+        true,
+      keyEncipherment: 
+        true,
+      dataEncipherment: 
+        true };
+  _ext_key_usage =
+    { name:
+        "extKeyUsage",
+      serverAuth: 
+        true,
+      clientAuth: 
+        true,
+      codeSigning: 
+        true,
+      emailProtection: 
+        true,
+      timeStamping: 
+        true };
+  _ns_cert_type =
+    { name:
+        "nsCertType",
+      client: 
+        true,
+      server: 
+        true,
+      email: 
+        true,
+      objsign: 
+        true,
+      sslCA: 
+        true,
+      emailCA: 
+        true,
+      objCA: 
+        true };
+  _alt_names = [
+    { type:
+        6, // URI
+      value:
+        "http://localhost/webid#me" },
+    { type:
+        7, // IP
+      value:
+        "127.0.0.1" }
+  ];
+  _subject_alt_name =
+    { name:
+        "subjectAltName",
+      altNames:
+        _alt_names };
+  _subject_key_identifier =
+    { name:
+        "subjectKeyIdentifier" };
+  _extensions = [
+    _basic_constraints,
+    _key_usage,
+    _ext_key_usage,
+    _ns_cert_type,
+    _subject_alt_name,
+    _subject_key_identifier
+  ];
+  _cert.setExtensions(
+    _extensions);
+  _cert.sign(
+    _keys.privateKey);
+  console.log(
+    _cert);
+  _cert_pem =
+    _pki.certificateToPem(
+      _cert);
+  _keys_pem =
+    _pki.privateKeyToPem(
+      _keys.privateKey;
+  if ( _output_file != "" ) {
+    if ( typeof window !== 'undefined') {
+      await _fs_worker_start(
+          "fs-worker.js");
+    }
+    _file_write(
+      _output_file,
+      _cert_pem);
+  }
+  console.log(
+    _rsa);
+  return [ _keys_pem,
+	   _cert_pem ];
+}
+
+module.exports = {
+  _cert_gen:
+    _cert_gen
+};
