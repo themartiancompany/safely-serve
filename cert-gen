@@ -1,0 +1,475 @@
+#!/usr/bin/env node
+
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
+//    ----------------------------------------------------------------------
+//    Copyright © 2024, 2025  Pellegrino Prevete
+//
+//    All rights reserved
+//    ----------------------------------------------------------------------
+//
+//    This program is free software: you can redistribute it and/or modify
+//    it under the terms of the GNU Affero General Public License as published by
+//    the Free Software Foundation, either version 3 of the License, or
+//    (at your option) any later version.
+//
+//    This program is distributed in the hope that it will be useful,
+//    but WITHOUT ANY WARRANTY; without even the implied warranty of
+//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//    GNU Affero General Public License for more details.
+//
+//    You should have received a copy of the GNU Affero General Public License
+//    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+const
+  _libcrash =
+    require(
+      'crash-js');
+_cmdline_check =
+  _libcrash._cmdline_check;
+_msg_info =
+  _libcrash._msg_info;
+_msg_error =
+  _libcrash._msg_error;
+const
+  _libcert_gen_module =
+    require(
+      "./libcert-gen");
+_cert_gen =
+  _libcert_gen_module._cert_gen;
+
+function
+  _global_variables() {
+  app_name =
+    "cert-gen";
+  key_private =
+    "";
+  keys_length =
+    "";
+  serial_number =
+    "";
+  validity_min =
+    "";
+  validity_max =
+    "";
+  domain_name =
+    "";
+  country_name =
+    "";
+  state_name =
+    "";
+  locality_name =
+    "";
+  organization_name =
+    "";
+  organization_unit =
+    "";
+  output_file =
+    "";
+  quiet =
+    "";
+}
+
+function 
+  _overrides_set() {
+  if ( keys_length == "" ) {
+    keys_length =
+      "4096";
+  }
+  if ( validity_min == "" ) {
+    validity_min =
+      new Date();
+  }
+  if ( validity_max == "" ) {
+    validity_max =
+      new Date();
+    validity_max.setFullYear(
+      validity_min.getFullYear() +
+      1);
+  }
+  if ( serial_number == "" ) {
+    serial_number =
+      "01";
+  }
+  if ( domain_name == "" ) {
+    domain_name =
+      "localhost";
+  }
+  if ( country_name == "" ) {
+    country_name =
+      "LP";
+  }
+  if ( state_name == "" ) {
+    state_name =
+      "Nananapoli";
+  }
+  if ( locality_name == "" ) {
+    locality_name =
+      "Pollena Trocchia";
+  }
+  if ( organization_name == "" ) {
+    organization_name =
+      "The Martian Company";
+  }
+  if ( organization_unit == "" ) {
+    organization_unit =
+      "Index Development Team";
+  }
+  if ( key_private == "" ) {
+    output_file =
+      process.cwd() +
+      "/key.pem";
+  }
+  if ( output_file == "" ) {
+    output_file =
+      process.cwd() +
+      "/cert.pem";
+  }
+}
+
+function
+  _config_show() {
+  let
+    _line,
+    _text;
+  _text = [
+    `${app_name} configuration:`,
+    `      Runtime environment:   ${runtime_environment}`,
+    `               Key length:   ${keys_length}`,
+    `            Serial number:   ${serial_number}`,
+    `              Valid after:   ${validity_min}`,
+    `               Expires on:   ${validity_max}`,
+    `              Domain name:   ${domain_name}`,
+    `                  Country:   ${country_name}`,
+    `                    State:   ${state_name}`,
+    `                 Locality:   ${locality_name}`,
+    `             Organization:   ${organization_name}`,
+    `        Organization unit:   ${organization_unit}`,
+    `              Output file:   ${output_file}`,
+  ];
+  for ( _line of _text ) {
+    _msg_info(
+      _line);
+  }
+}
+
+function
+  _usage(
+    _exit_code) {
+  let
+    _line,
+    _text;
+  _text = [
+    "",
+    "Generates a public / private key pair and an X.509v3 certificate.",
+    "",
+    "Usage:",
+    "",
+    "  cert-gen",
+    "    [options]",
+    "",
+    "  options:",
+    "     -i, --key-private=FILE          Use existing private key.",
+    `                                     Default: '${key_private}'`,
+    "     -l, --keys-length=N             Keys pair length.",
+    `                                     Default: '${keys_length}'`,
+    "     -o, --output-file=FILE          Set output file.",
+    `                                     Default: '${output_file}'`,
+    "",
+    "  validity options:",
+    "     -B, --validity-start=DATE       Set activation date.",
+    `                                     Default: '${validity_min}'`,
+    "     -E, --validity-end=DATE         Set expiration date.",
+    `                                     Default: '${validity_max}'`,
+    "",
+    "  identity options:",
+    "     -D, --domain-name=DOMAIN        Set domain name.",
+    `                                     Default: '${domain_name}'`,
+    "     -C, --country-name=COUNTRY      Set country name.",
+    `                                     Default: '${country_name}'`,
+    "     -S, --state-name=STATE          Set state name.",
+    `                                     Default: '${state_name}'`,
+
+    "     -L, --locality-name=LOCALITY    Set locality name.",
+    `                                     Default: '${locality_name}'`,
+    "     -O, --organization-name=ORG     Set organization name.",
+    `                                     Default: '${organization_name}'`,
+    "     -U, --organization-unit=UNIT    Set organization unit.",
+    `                                     Default: '${organization_unit}'`,
+    "     -s, --serial-number=SERIAL      Set serial number.",
+    `                                     Default: '${serial_number}'`,
+    "",
+    "     -h --help                       This message.",
+    "     -v --verbose                    Enable verbose output.",
+    "",
+  ];
+  for ( _line of _text ) {
+    console.log(
+      _line);
+  }
+  process.exit(
+    _exit_code);
+}
+
+function
+  _cmdline_parse_help(
+    _argv) {
+  let
+    _help_display;
+  _help_display =
+    _argv[
+      "help"] ||
+    _argv[
+      "h"];
+  if ( _help_display ) {
+    quiet =
+      "n";
+    _overrides_set();
+    _usage(
+      0);
+  }
+}
+
+function
+  _input_args_check(
+    _argv) {
+  if ( _argv[
+         "_"].length < 1 ) {
+    _msg =
+      "Input file argument required.";
+    _msg_error(
+      _msg,
+      0);
+    _usage(
+      1);
+  }
+}
+
+function 
+  _cmdline_parse() {
+  let
+    _argv,
+    _msg;
+  _argv =
+    _yargv_get();
+  quiet = 
+    "y";
+  runtime_environment =
+    "node";
+  _cmdline_parse_help(
+    _argv);
+  // _input_args_check(
+  //   _argv);
+  // input_file =
+  //   _argv[
+  //     "_"][
+  //       0];
+  if ( "i" in _argv ) {
+    key_private =
+      _argv[
+        "i"];
+  }
+  if ( "key-private" in _argv ) {
+    key_private =
+      _argv[
+        "key-private"];
+  }
+  if ( "l" in _argv ) {
+    keys_length =
+      _argv[
+        "l"];
+  }
+  if ( "keys-length" in _argv ) {
+    keys_length =
+      _argv[
+        "keys-length"];
+  }
+  if ( "B" in _argv ) {
+    validity_min =
+      _argv[
+        "B"];
+  }
+  if ( "validity-max" in _argv ) {
+    validity_max =
+      _argv[
+        "validity-max"];
+  }
+  if ( "D" in _argv ) {
+    domain_name =
+      _argv[
+        "D"];
+  }
+  if ( "domain-name" in _argv ) {
+    domain_name =
+      _argv[
+        "domain-name"];
+  }
+  if ( "C" in _argv ) {
+    country_name =
+      _argv[
+        "C"];
+  }
+  if ( "country-name" in _argv ) {
+    country_name =
+      _argv[
+        "country-name"];
+  }
+  if ( "S" in _argv ) {
+    state_name =
+      _argv[
+        "S"];
+  }
+  if ( "state-name" in _argv ) {
+    country_name =
+      _argv[
+        "state-name"];
+  }
+  if ( "L" in _argv ) {
+    locality_name =
+      _argv[
+        "L"];
+  }
+  if ( "locality-name" in _argv ) {
+    locality_name =
+      _argv[
+        "locality-name"];
+  }
+  if ( "O" in _argv ) {
+    organization_name =
+      _argv[
+        "O"];
+  }
+  if ( "organization-name" in _argv ) {
+    organization_name =
+      _argv[
+        "organization-name"];
+  }
+  if ( "U" in _argv ) {
+    organization_unit =
+      _argv[
+        "U"];
+  }
+  if ( "organization-unit" in _argv ) {
+    organization_unit =
+      _argv[
+        "organization-unit"];
+  }
+  if ( "o" in _argv ) {
+    output_file =
+      _argv[
+        "o"];
+  }
+  if ( "output-file" in _argv ) {
+    output_file =
+      _argv[
+        "output-file"];
+  }
+  if ( "s" in _argv ) {
+    serial_number =
+      _argv[
+        "s"];
+  }
+  if ( "serial-number" in _argv ) {
+    serial_number =
+      _argv[
+        "serial-number"];
+  }
+  verbose =
+    _argv[
+      "verbose"] ||
+    _argv[
+      "v"];
+  if ( verbose ) {
+    quiet =
+      "n";
+  }
+}
+
+function
+  _url_parse() {
+  let
+    _argv;
+  runtime_environment =
+    "browser";
+  _argv =
+    _argv_url_get();
+  key_private =
+    _argv_url_get(
+      "key_private")[
+        0];
+  keys_length =
+    _argv_url_get(
+      "keys_length")[
+        0];
+  output_file =
+    _argv_url_get(
+      "output_file")[
+        0];
+  validity_min =
+    _argv_url_get(
+      "validity_min")[
+        0];
+  validity_max =
+    _argv_url_get(
+      "validity_max")[
+        0];
+  country_name =
+    _argv_url_get(
+      "country_name")[
+        0];
+  state_name =
+    _argv_url_get(
+      "state_name")[
+        0];
+  locality_name =
+    _argv_url_get(
+      "locality_name")[
+        0];
+  organization_name =
+    _argv_url_get(
+      "organization_name")[
+        0];
+  organization_unit =
+    _argv_url_get(
+      "organization_unit")[
+        0];
+  serial_number =
+    _argv_url_get(
+      "serial_number")[
+        0];
+  quiet =
+    _argv_url_get(
+      "quiet");
+  if ( quiet.length === 0 ) {
+    quiet =
+      "n";
+  }
+}
+
+_global_variables();
+if ( _cmdline_check(
+       "cert-gen") == true ) {
+  _cmdline_parse();
+}
+else {
+  _url_parse();
+}
+_overrides_set();
+_config_show();
+app_opts = [
+  key_private,
+  keys_length,
+  serial_number,
+  validity_min,
+  validity_max,
+  domain_name,
+  country_name,
+  state_name,
+  locality_name,
+  organization_name,
+  organization_unit,
+  output_file,
+];
+_cert_gen.apply(
+  null,
+  app_opts);
