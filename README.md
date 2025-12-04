@@ -20,20 +20,19 @@
 [comment]: <> (If not, see <https://www.gnu.org/licenses/>.)
 
 
-# The Martian Company's Split (`tmcsplit`)
+# Certificate Tools (`cert-tools`)
 
-Javascript GNU Split rewrite.
-
-Splittable with number of parts or maximum bytes per part.
+Generates private/public key pairs and X.509
+certificates for HTTP web servers using
+[Forge](
+  https://github.com/digitalbazaar/forge)
+Javascript TLS implementation.
 
 It works both in Node.js and in web browsers
 using the
 [Crash Javacript](
   https://github.com/themartiancompany/crash-js)
-and
-[Split File](
-  https://github.com/themartiancompany/node-split-file)
-modules.
+module.
 
 ### Installation
 
@@ -44,27 +43,27 @@ with the following command:
 npm \
   install \
     --save \
-    @themartiancompany/tmcsplit
+    cert-tools
 ```
 
 You can then run the program with
 
 ```bash
 npx \
-  "tmcsplit"
+  "cert-gen"
 ```
 
-or just with `tmcsplit` if you install
+or just with `cert-gen` if you install
 the program system-wide using npm from this source
 repository or from the
 [NPM Registry](
-  https://www.npmjs.com/package/tmcsplit)
+  https://www.npmjs.com/package/cert-tools)
 
 ```
 npm \
   -g \
   install \
-    "split-file"
+    "cert-tools"
 ```
 
 or if using GNU make in this repository
@@ -82,7 +81,7 @@ or if you install it as a
   https://github.com/themartiancompany/dogeos)
 package from the
 [Ur](
-  https://github.com/themartiancompany)
+  https://github.com/themartiancompany/ur)
 
 ```bash
 ur \

@@ -1,10 +1,10 @@
 {
   "name":
-    "tmcsplit",
+    "cert-tools",
   "version":
     "0.0.1",
   "description":
-    "Basic Javascript implementation of GNU Split.",
+    "Generates private/public key pairs and X.509 certificates for HTTP web servers using Forge Javascript TLS implementation",
   "funding": {
     "type":
       "patreon",
@@ -12,38 +12,40 @@
       "https://patreon.com/tallero"
   },
   "man":
-    "./man/tmcsplit.1",
+    "./man/cert-gen.1",
   "files": [
     "AUTHORS.rst",
     "COPYING",
     "README.md",
     "eslint.config.mjs",
     "package.json",
-    "tmcsplit.js",
-    "tmcsplit",
+    "cert-gen.js",
+    "cert-gen",
     "fs-worker.js",
     "fs-worker.webpack.config.cjs",
     "index.html",
+    "libcert-gen",
+    "libcert-gen.webpack.config.cjs",
     "serve.json",
-    "libtmcsplit.webpack.config.cjs",
     "webpack.config.cjs"
   ],
   "keywords": [
+    "forge",
     "ur",
     "themartiancompany",
     "dogeos"
   ],
   "homepage":
-    "https://github.com/themartiancompany/tmcsplit",
+    "https://github.com/themartiancompany/cert-tools",
   "bugs": {
     "url":
-      "https://github.com/themartiancompany/tmcsplit/issues"
+      "https://github.com/themartiancompany/cert-tools/issues"
   },
   "repository": {
     "type":
       "git",
     "url":
-      "git+https://github.com/themartiancompany/tmcsplit.git"
+      "git+https://github.com/themartiancompany/cert-tools.git"
   },
   "license":
     "AGPL-3.0-or-later",
@@ -60,8 +62,8 @@
       "^0.0.3",
     "eslint":
       "^9.32.0",
-    "serve":
-      "^14.2.5",
+    "parcel":
+      "^2.16.0",
     "webpack":
       "^5.102.1",
     "webpack-cli":
@@ -70,18 +72,18 @@
   "dependencies": {
     "crash-js":
       "^0.1.66",
-    "split-file":
-      "npm:@themartiancompany/split-file@2.3.2"
+    "forge":
+      "^1.3.1"
   },
   "type":
     "commonjs",
   "main":
-    "tmcsplit",
+    "cert-gen",
   "scripts": {
     "build-fs-worker":
       "npx webpack --mode 'production' --config 'fs-worker.webpack.config.cjs' --stats-error-details",
     "build-lib":
-      "npx webpack --mode 'production' --config 'libtmcsplit.webpack.config.cjs' --stats-error-details",
+      "npx webpack --mode 'production' --config 'libcert-gen.webpack.config.cjs' --stats-error-details",
     "build-bin":
       "npx webpack --mode 'production' --config 'webpack.config.cjs' --stats-error-details",
     "build":
@@ -91,7 +93,7 @@
     "publish-pnm":
       "npm run build && npm publish --access public",
     "start":
-      "serve -c 'serve.json'",
+      "npx parcel serve index.html --port 3000 --https --no-cache",
     "test":
       "echo \"Error: no test specified\" && exit 1"
   }

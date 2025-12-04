@@ -22,7 +22,7 @@
 
 
 =====================================
-The Martian Company Split Authors
+Certificate Tools Authors
 =====================================
 
 * Pellegrino Prevete <pellegrinoprevete@gmail.com>
