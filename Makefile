@@ -20,7 +20,7 @@
 #    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 PREFIX ?= /usr/local
-_PROJECT=tmcsplit
+_PROJECT=cert-tools
 _NAMESPACE=themartiancompany
 DOC_DIR=$(DESTDIR)$(PREFIX)/share/doc/$(_PROJECT)
 USR_DIR=$(DESTDIR)$(PREFIX)
@@ -94,8 +94,8 @@ build-man:
 	  -p \
 	  "build/man"
 	rst2man \
-	  "man/$(_PROJECT).1.rst" \
-	  "build/man/$(_PROJECT).1"
+	  "man/cert-gen.1.rst" \
+	  "build/man/cert-gen.1"
 
 build-npm:
 
