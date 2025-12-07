@@ -22,11 +22,15 @@
 
 # Certificate Tools (`cert-tools`)
 
-Generates private/public key pairs and X.509
-certificates for HTTP web servers using
-[Forge](
-  https://github.com/digitalbazaar/forge)
-Javascript TLS implementation.
+Set of Javascript commands which
+replace some from `openssl`.
+
+- `cert-gen`:
+    generates private/public key pairs and X.509
+    certificates for HTTP web servers using
+    [Forge](
+      https://github.com/digitalbazaar/forge)
+    Javascript TLS implementation.
 
 It works both in Node.js and in web browsers
 using the
