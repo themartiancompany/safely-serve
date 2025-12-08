@@ -38,9 +38,6 @@ If no SSL certificate and private key
 are passed, new ones are generated
 unique to that specific directory.
 
-Options
-========
-
 
 Options
 ==================
@@ -77,8 +74,9 @@ Options
 --no-port-switching         Do not open a port other than
                             the one specified when it's taken.
 
--v, --version               Displays the current version of serve
---help                      Shows this help message
+-v, --version               Displays the current version of
+                            Safely Serve.
+--help                      Shows this help message.
 
 
 Endpoints
