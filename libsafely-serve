@@ -28,10 +28,6 @@ const
 _sha256 =
   _sha_module.sha256;
 const
-  _serve_module =
-    require(
-      'serve');
-const
   _cert_tools_module =
     require(
       'cert-tools');
@@ -69,12 +65,14 @@ function
     _string;
   _string =
     _sha256(
-      _path);
+      _path + "\n");
   return _string;
 }
 
 async function
   _safely_serve(
+    _target_directory,
+    _target_certificate,
     _key_private_path,
     _keys_length,
     _serial_number,
@@ -100,8 +98,12 @@ async function
     _keys_pem,
     _ns_cert_type,
     _pem,
+    _serve,
     _subject_alt_name,
     _subject_key_identifier;
+  _serve =
+    import(
+      'serve');
   _keys_length =
     Number(
       _keys_length);

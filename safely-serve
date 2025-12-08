@@ -37,10 +37,12 @@ _msg_info =
   _libcrash._msg_info;
 _msg_error =
   _libcrash._msg_error;
+_path_join =
+  _libcrash._path_join;
 const
   _libsafely_serve_module =
     require(
-      "./safely-serve");
+      "./libsafely-serve");
 _path_encode =
   _libsafely_serve_module._path_encode;
 _safely_serve =
@@ -83,27 +85,33 @@ function
 }
 
 function
-  _target_certificate_auto_detect() {
+  _target_certificate_auto_detect(
+    _target_directory) {
   let
-    _encoded_target,
+    _target_directory_encoded,
     _target_certificate;
   _target_certificate =
     target_certificate;
   if ( _target_certificate == "" ) {
-    _encoded_target =
+    _target_directory_encoded =
       _path_encode(
         target_directory);
     _target_certificate =
       _homedir() +
-      `/.cache/${app_name}/${_encoded_target}`;
+      `/.cache/${app_name}/${_target_directory_encoded}`;
   }
   return _target_certificate;
 }
 
 function 
   _overrides_set() {
+  if ( target_directory == "" ) {
+    target_directory =
+      process.cwd();
+  }
   target_certificate =
-    _target_certificate_auto_detect();
+    _target_certificate_auto_detect(
+      target_directory);
   if ( validity_min == "" ) {
     validity_min =
       new Date();
@@ -164,6 +172,7 @@ function
     `${app_name} configuration:`,
     `      Runtime environment:   ${runtime_environment}`,
     `         Target directory:   ${target_directory}`,
+    `       Target certificate:   ${target_certificate}`,
     `               Key length:   ${keys_length}`,
     `            Serial number:   ${serial_number}`,
     `              Valid after:   ${validity_min}`,
@@ -197,6 +206,7 @@ function
     "  safely-serve",
     "    [options]",
     "    [serve-options]",
+    "    <target-directory>",
     "",
     "  options:",
     "     -i, --key-private=FILE          Use existing private key.",
@@ -275,11 +285,29 @@ function
   }
 }
 
+function
+  _target_directory_auto_detect() {
+  let
+    _target_directory;
+  _target_directory =
+    _argv[
+      "_"][
+        0];
+  if ( typeof _target_directory === 'undefined' ) {
+    _target_directory =
+      "";
+    return _target_directory;_target_directory =
+      process.pwd();
+  }
+  return _target_directory;
+}
+
 function 
   _cmdline_parse() {
   let
     _argv,
-    _msg;
+    _msg,
+    _target_directory;
   _argv =
     _yargv_get();
   quiet = 
@@ -288,6 +316,16 @@ function
     "node";
   _cmdline_parse_help(
     _argv);
+  _target_directory =
+    _argv[
+      "_"][
+        0];
+  if ( typeof _target_directory === 'undefined' ) {
+    target_directory =
+      _argv[
+        "_"][
+          0];
+  }
   // _input_args_check(
   //   _argv);
   // input_file =
@@ -423,6 +461,14 @@ function
     "browser";
   _argv =
     _argv_url_get();
+  target_directory =
+    _argv_url_get(
+      "target_directory")[
+        0];
+  target_certificate =
+    _argv_url_get(
+      "target_certificate")[
+        0];
   key_private =
     _argv_url_get(
       "key_private")[
@@ -487,6 +533,8 @@ else {
 _overrides_set();
 _config_show();
 app_opts = [
+  target_directory,
+  target_certificate,
   key_private,
   keys_length,
   serial_number,

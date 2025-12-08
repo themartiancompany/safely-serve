@@ -72,6 +72,10 @@ module.exports = {
         _path.resolve(
           __dirname,
           'node_modules/path/mod.js'),
+      "serve":
+        _path.resolve(
+          __dirname,
+          'node_modules/serve/build/main.js'),
     },
     fallback: {
       "serve":
