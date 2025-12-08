@@ -74,7 +74,9 @@
     "crash-js":
       "^0.1.67",
     "cert-tools":
-      "^0.0.7"
+      "^0.0.7",
+    "serve":
+      "^14.2.5"
   },
   "type":
     "commonjs",
