@@ -16,6 +16,10 @@ const
   _output_file_name =
     `${_input_file_name}.js`;
 const
+  _serve_ignore =
+  { resourceRegExp:
+      /^serve$/ };
+const
   _yargs_ignore =
   { resourceRegExp:
       /^yargs$/ };
@@ -31,6 +35,10 @@ const
 const
   _ignore_plugin =
     _webpack.IgnorePlugin; 
+const
+  _serve_ignore_plugin =
+    new _ignore_plugin(
+          _serve_ignore);
 const
   _yargs_ignore_plugin =
     new _ignore_plugin(
@@ -64,12 +72,10 @@ module.exports = {
         _path.resolve(
           __dirname,
           'node_modules/path/mod.js'),
-      "serve":
-        _path.resolve(
-          __dirname,
-          'node_modules/serve/build/main.js'),
     },
     fallback: {
+      "serve":
+        false,
       "utils":
         false,
       "web-worker":
@@ -84,6 +90,7 @@ module.exports = {
     { yargs:
         'yargs' },
   plugins: [
+    _serve_ignore_plugin,
     _yargs_ignore_plugin,
     _yargs_helpers_ignore_plugin
   ]
