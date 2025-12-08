@@ -72,7 +72,7 @@
   },
   "dependencies": {
     "crash-js":
-      "^0.1.66",
+      "^0.1.67",
     "node-forge":
       "^1.3.1"
   },
