@@ -8,7 +8,7 @@ const
       __dirname);
 const
   _input_file_name =
-    `libserves`;
+    `libsserve`;
 const
   _input_file_path =
     `./${_input_file_name}`;
