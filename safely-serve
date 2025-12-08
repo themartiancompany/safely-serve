@@ -81,7 +81,7 @@ function
 }
 
 function
-  _target_tertificate_auto_detect() {
+  _target_certificate_auto_detect() {
   let
     _encoded_target,
     _target_certificate;
@@ -93,7 +93,7 @@ function
         target_directory);
     _target_certificate =
       _homedir() +
-      `/.cache/safely-serve/${app_name}/${_encoded_target}`;
+      `/.cache/${app_name}/${_encoded_target}`;
   }
   return _target_certificate;
 }
@@ -476,7 +476,7 @@ function
 
 _global_variables();
 if ( _cmdline_check(
-       "cert-gen") == true ) {
+       app_name) == true ) {
   _cmdline_parse();
 }
 else {
