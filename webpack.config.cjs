@@ -83,6 +83,10 @@ module.exports = {
         _path.resolve(
           __dirname,
           'node_modules/fs/fs'),
+      "os":
+        _path.resolve(
+          __dirname,
+          'node_modules/os'),
       "path":
         _path.resolve(
           __dirname,

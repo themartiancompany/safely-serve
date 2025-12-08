@@ -2,7 +2,7 @@
   "name":
     "safely-serve",
   "version":
-    "0.0.1",
+    "0.0.2",
   "description":
     "Serve extension which auto-generates self-signed OpenSSL certificates' at runtime",
   "funding": {
@@ -77,6 +77,8 @@
       "^0.0.7",
     "js-sha256":
       "^0.11.1",
+    "os":
+      "npm:os-browserify@^0.3.0",
     "serve":
       "^14.2.5"
   },
