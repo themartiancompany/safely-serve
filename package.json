@@ -1,6 +1,6 @@
 {
   "name":
-    "serves",
+    "sserve",
   "version":
     "0.0.1",
   "description":
@@ -12,22 +12,22 @@
       "https://patreon.com/tallero"
   },
   "man":
-    "./man/serves.1",
+    "./man/sserve.1",
   "files": [
     "AUTHORS.rst",
     "COPYING",
     "README.md",
     "eslint.config.mjs",
     "package.json",
-    "serves.js",
-    "serves",
+    "sserve.js",
+    "sserve",
     "fs-worker.js",
     "fs-worker.webpack.config.cjs",
     "index.html",
-    "libserves",
-    "libserves.webpack.config.cjs",
+    "libsserve",
+    "libsserve.webpack.config.cjs",
     "man",
-    "serve.json",
+    "sserve.json",
     "webpack.config.cjs"
   ],
   "keywords": [
@@ -37,16 +37,16 @@
     "dogeos"
   ],
   "homepage":
-    "https://github.com/themartiancompany/serves",
+    "https://github.com/themartiancompany/sserve",
   "bugs": {
     "url":
-      "https://github.com/themartiancompany/serves/issues"
+      "https://github.com/themartiancompany/sserve/issues"
   },
   "repository": {
     "type":
       "git",
     "url":
-      "git+https://github.com/themartiancompany/serves.git"
+      "git+https://github.com/themartiancompany/sserve.git"
   },
   "license":
     "AGPL-3.0-or-later",
@@ -81,15 +81,15 @@
   "type":
     "commonjs",
   "main":
-    "libserves",
+    "libsserve",
   "bin":
-    { "serves":
-        "serves" },
+    { "sserve":
+        "sserve" },
   "scripts": {
     "build-fs-worker":
       "npx webpack --mode 'production' --config 'fs-worker.webpack.config.cjs' --stats-error-details",
     "build-lib":
-      "npx webpack --mode 'production' --config 'libserves.webpack.config.cjs' --stats-error-details",
+      "npx webpack --mode 'production' --config 'libsserve.webpack.config.cjs' --stats-error-details",
     "build-bin":
       "npx webpack --mode 'production' --config 'webpack.config.cjs' --stats-error-details",
     "build":

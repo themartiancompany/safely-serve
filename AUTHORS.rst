@@ -22,7 +22,7 @@
 
 
 =====================================
-Serve Safely Authors
+Safely Serve Authors
 =====================================
 
 * Pellegrino Prevete <pellegrinoprevete@gmail.com>

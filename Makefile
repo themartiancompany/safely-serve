@@ -20,7 +20,7 @@
 #    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 PREFIX ?= /usr/local
-_PROJECT=serves
+_PROJECT=sserve
 _NAMESPACE=themartiancompany
 DOC_DIR=$(DESTDIR)$(PREFIX)/share/doc/$(_PROJECT)
 USR_DIR=$(DESTDIR)$(PREFIX)
