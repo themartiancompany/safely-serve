@@ -8,7 +8,7 @@ const
       __dirname);
 const
   _input_file_name =
-    `libsserve`;
+    `libsafely-serve`;
 const
   _input_file_path =
     `./${_input_file_name}`;

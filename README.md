@@ -20,7 +20,7 @@
 [comment]: <> (If not, see <https://www.gnu.org/licenses/>.)
 
 
-# Safel Serve (`sserve`)
+# Safely Serve (`safely-serve`)
 
 A Serve extension which
 auto-generate a new
@@ -47,27 +47,27 @@ with the following command:
 npm \
   install \
     --save \
-    "sserve"
+    "safely-serve"
 ```
 
 You can then run the program with
 
 ```bash
 npx \
-  "sserve"
+  "safely-serve"
 ```
 
-or just with `sserve` if you install
+or just with `safely-serve` if you install
 the program system-wide using npm from this source
 repository or from the
 [NPM Registry](
-  https://www.npmjs.com/package/sserve)
+  https://www.npmjs.com/package/safely-serve)
 
 ```
 npm \
   -g \
   install \
-    "sserve"
+    "safely-serve"
 ```
 
 or if using GNU make in this repository
@@ -89,7 +89,7 @@ package from the
 
 ```bash
 ur \
-  "sserve"
+  "safely-serve"
 ```
 
 ### Documentation
@@ -98,7 +98,7 @@ Upon installation the manual can be accessed with
 
 ```bash
 man \
-  "sserve"
+  "safely-serve"
 ```
 
 # License
