@@ -22,7 +22,7 @@
 
 
 =====================================
-Certificate Tools Authors
+Serve Safely Authors
 =====================================
 
 * Pellegrino Prevete <pellegrinoprevete@gmail.com>

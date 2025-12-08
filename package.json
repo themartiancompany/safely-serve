@@ -1,10 +1,10 @@
 {
   "name":
-    "cert-tools",
+    "serves",
   "version":
-    "0.0.7",
+    "0.0.1",
   "description":
-    "OpenSSL certificates' tools written using the Forge TLS Javascript implementation",
+    "Serve extension which auto-generates self-signed OpenSSL certificates' at runtime",
   "funding": {
     "type":
       "patreon",
@@ -12,41 +12,41 @@
       "https://patreon.com/tallero"
   },
   "man":
-    "./man/cert-gen.1",
+    "./man/serves.1",
   "files": [
     "AUTHORS.rst",
     "COPYING",
     "README.md",
     "eslint.config.mjs",
     "package.json",
-    "cert-gen.js",
-    "cert-gen",
+    "serves.js",
+    "serves",
     "fs-worker.js",
     "fs-worker.webpack.config.cjs",
     "index.html",
-    "libcert-gen",
-    "libcert-gen.webpack.config.cjs",
+    "libserves",
+    "libserves.webpack.config.cjs",
     "man",
     "serve.json",
     "webpack.config.cjs"
   ],
   "keywords": [
-    "forge",
+    "cert-tools",
     "ur",
     "themartiancompany",
     "dogeos"
   ],
   "homepage":
-    "https://github.com/themartiancompany/cert-tools",
+    "https://github.com/themartiancompany/serves",
   "bugs": {
     "url":
-      "https://github.com/themartiancompany/cert-tools/issues"
+      "https://github.com/themartiancompany/serves/issues"
   },
   "repository": {
     "type":
       "git",
     "url":
-      "git+https://github.com/themartiancompany/cert-tools.git"
+      "git+https://github.com/themartiancompany/serves.git"
   },
   "license":
     "AGPL-3.0-or-later",
@@ -73,16 +73,16 @@
   "dependencies": {
     "crash-js":
       "^0.1.67",
-    "node-forge":
-      "^1.3.1"
+    "cert-tools":
+      "^0.0.7"
   },
   "type":
     "commonjs",
   "main":
-    "libcert-gen",
+    "libserves",
   "bin":
-    { "cert-gen":
-        "cert-gen" },
+    { "serves":
+        "serves" },
   "scripts": {
     "build-fs-worker":
       "npx webpack --mode 'production' --config 'fs-worker.webpack.config.cjs' --stats-error-details",

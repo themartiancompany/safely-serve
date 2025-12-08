@@ -20,7 +20,7 @@
 #    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 PREFIX ?= /usr/local
-_PROJECT=cert-tools
+_PROJECT=serves
 _NAMESPACE=themartiancompany
 DOC_DIR=$(DESTDIR)$(PREFIX)/share/doc/$(_PROJECT)
 USR_DIR=$(DESTDIR)$(PREFIX)
@@ -51,10 +51,10 @@ NPM_FILES=\
   "AUTHORS.rst" \
   "eslint.config.mjs" \
   "fs-worker.webpack.config.cjs" \
-  "libcert-gen" \
-  "libcert-gen.webpack.config.cjs" \
+  "lib$(_PROJECT)" \
+  "lib$(_PROJECT).webpack.config.cjs" \
   "package.json" \
-  "cert-gen" \
+  "$(_PROJECT)" \
   "webpack.config.cjs"
 
 all: build-man build-npm
@@ -75,8 +75,8 @@ install: install-scripts install-doc install-examples install-man
 install-scripts:
 
 	$(_INSTALL_EXE) \
-	  "cert-gen" \
-	  "$(LIB_DIR)/cert-gen"
+	  "$(_PROJECT)" \
+	  "$(LIB_DIR)/$(_PROJECT)"
 	$(_INSTALL_EXE) \
 	  "lib$(_PROJECT)" \
 	  "$(LIB_DIR)/lib$(_PROJECT)"
@@ -91,8 +91,8 @@ build-man:
 	  -p \
 	  "build/man"
 	rst2man \
-	  "man/cert-gen.1.rst" \
-	  "build/man/cert-gen.1"
+	  "man/$(_PROJECT).1.rst" \
+	  "build/man/$(_PROJECT).1"
 
 build-npm:
 
