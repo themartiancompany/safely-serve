@@ -22,6 +22,12 @@
 //    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 const
+  _os =
+    require(
+      "os");
+_homedir =
+  _os.homedir;
+const
   _libcrash =
     require(
       'crash-js');
@@ -32,16 +38,20 @@ _msg_info =
 _msg_error =
   _libcrash._msg_error;
 const
-  _libcert_gen_module =
+  _libsafely_serve_module =
     require(
-      "./libcert-gen");
-_cert_gen =
-  _libcert_gen_module._cert_gen;
+      "./safely-serve");
+_safely_serve =
+  _libsafely_serve_module._safely_serve;
 
 function
   _global_variables() {
   app_name =
-    "cert-gen";
+    "safely-serve";
+  target_certificate =
+    "";
+  target_directory =
+    "";
   key_private =
     "";
   keys_length =
@@ -70,12 +80,28 @@ function
     "";
 }
 
+function
+  _target_tertificate_auto_detect() {
+  let
+    _encoded_target,
+    _target_certificate;
+  _target_certificate =
+    target_certificate;
+  if ( _target_certificate == "" ) {
+    _encoded_target =
+      _sha256sum(
+        target_directory);
+    _target_certificate =
+      _homedir() +
+      `/.cache/safely-serve/${app_name}/${_encoded_target}`;
+  }
+  return _target_certificate;
+}
+
 function 
   _overrides_set() {
-  if ( keys_length == "" ) {
-    keys_length =
-      "4096";
-  }
+  target_certificate =
+    _target_certificate_auto_detect();
   if ( validity_min == "" ) {
     validity_min =
       new Date();
@@ -135,6 +161,7 @@ function
   _text = [
     `${app_name} configuration:`,
     `      Runtime environment:   ${runtime_environment}`,
+    `         Target directory:   ${target_directory}`,
     `               Key length:   ${keys_length}`,
     `            Serial number:   ${serial_number}`,
     `              Valid after:   ${validity_min}`,
@@ -161,12 +188,13 @@ function
     _text;
   _text = [
     "",
-    "Generates a public / private key pair and an X.509v3 certificate.",
+    "Serve extension which self-generate a SSL certificate at runtime.",
     "",
     "Usage:",
     "",
-    "  cert-gen",
+    "  safely-serve",
     "    [options]",
+    "    [serve-options]",
     "",
     "  options:",
     "     -i, --key-private=FILE          Use existing private key.",
@@ -236,7 +264,7 @@ function
   if ( _argv[
          "_"].length < 1 ) {
     _msg =
-      "Input file argument required.";
+      "Target directory required.";
     _msg_error(
       _msg,
       0);
@@ -470,6 +498,6 @@ app_opts = [
   organization_unit,
   output_file,
 ];
-_cert_gen.apply(
+_safely_serve.apply(
   null,
   app_opts);

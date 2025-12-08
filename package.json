@@ -1,6 +1,6 @@
 {
   "name":
-    "sserve",
+    "safely-serve",
   "version":
     "0.0.1",
   "description":
@@ -12,22 +12,22 @@
       "https://patreon.com/tallero"
   },
   "man":
-    "./man/sserve.1",
+    "./man/safely-serve.1",
   "files": [
     "AUTHORS.rst",
     "COPYING",
     "README.md",
     "eslint.config.mjs",
     "package.json",
-    "sserve.js",
-    "sserve",
+    "safely-serve.js",
+    "safely-serve",
     "fs-worker.js",
     "fs-worker.webpack.config.cjs",
     "index.html",
-    "libsserve",
-    "libsserve.webpack.config.cjs",
+    "libsafely-serve",
+    "libsafely-serve.webpack.config.cjs",
     "man",
-    "sserve.json",
+    "serve.json",
     "webpack.config.cjs"
   ],
   "keywords": [
@@ -37,16 +37,16 @@
     "dogeos"
   ],
   "homepage":
-    "https://github.com/themartiancompany/sserve",
+    "https://github.com/themartiancompany/safely-serve",
   "bugs": {
     "url":
-      "https://github.com/themartiancompany/sserve/issues"
+      "https://github.com/themartiancompany/safely-serve/issues"
   },
   "repository": {
     "type":
       "git",
     "url":
-      "git+https://github.com/themartiancompany/sserve.git"
+      "git+https://github.com/themartiancompany/safely-serve.git"
   },
   "license":
     "AGPL-3.0-or-later",
@@ -81,15 +81,15 @@
   "type":
     "commonjs",
   "main":
-    "libsserve",
+    "libsafely-serve",
   "bin":
-    { "sserve":
-        "sserve" },
+    { "safely-serve":
+        "safely-serve" },
   "scripts": {
     "build-fs-worker":
       "npx webpack --mode 'production' --config 'fs-worker.webpack.config.cjs' --stats-error-details",
     "build-lib":
-      "npx webpack --mode 'production' --config 'libsserve.webpack.config.cjs' --stats-error-details",
+      "npx webpack --mode 'production' --config 'libsafely-serve.webpack.config.cjs' --stats-error-details",
     "build-bin":
       "npx webpack --mode 'production' --config 'webpack.config.cjs' --stats-error-details",
     "build":
