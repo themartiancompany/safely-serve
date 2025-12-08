@@ -41,6 +41,8 @@ const
   _libsafely_serve_module =
     require(
       "./safely-serve");
+_path_encode =
+  _libsafely_serve_module._path_encode;
 _safely_serve =
   _libsafely_serve_module._safely_serve;
 
@@ -89,7 +91,7 @@ function
     target_certificate;
   if ( _target_certificate == "" ) {
     _encoded_target =
-      _sha256sum(
+      _path_encode(
         target_directory);
     _target_certificate =
       _homedir() +

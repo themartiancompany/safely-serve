@@ -22,6 +22,12 @@
 //    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 const
+  _sha_module =
+    require(
+      'js-sha256');
+_sha256 =
+  _sha_module.sha256;
+const
   _serve_module =
     require(
       'serve');
@@ -55,6 +61,17 @@ _msg_info =
   _libcrash._msg_info;
 _msg_error =
   _libcrash._msg_error;
+
+function
+  _path_encode(
+    _path) {
+  let
+    _string;
+  _string =
+    _sha256(
+      _path);
+  return _string;
+}
 
 async function
   _safely_serve(
@@ -127,6 +144,8 @@ async function
 }
 
 module.exports = {
+  _path_encode:
+    _path_encode,
   _safely_serve:
     _safely_serve
 };
