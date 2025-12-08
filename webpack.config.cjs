@@ -31,6 +31,10 @@ const
   { resourceRegExp:
       /^web-worker$/ };
 const
+  _serve_ignore =
+  { resourceRegExp:
+      /^serve$/ };
+const
   _yargs_ignore =
   { resourceRegExp:
       /^yargs$/ };
@@ -45,6 +49,10 @@ const
 const
   _ignore_plugin =
     _webpack.IgnorePlugin; 
+const
+  _serve_ignore_plugin =
+    new _ignore_plugin(
+          _serve_ignore);
 const
   _utils_ignore_plugin =
     new _ignore_plugin(
@@ -97,6 +105,8 @@ module.exports = {
           'node_modules/yargs-parser/browser.mjs'),
     },
     fallback: {
+      "serve":
+        false,
       "utils":
         false,
       "web-worker":
@@ -108,9 +118,12 @@ module.exports = {
     }
   },
   externals:
-    { yargs:
+    { serve:
+        'serve',
+      yargs:
         'yargs' },
   plugins: [
+    _serve_ignore_plugin,
     _yargs_ignore_plugin,
     _yargs_helpers_ignore_plugin
   ]
