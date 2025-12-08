@@ -56,7 +56,7 @@ _msg_info =
 _msg_error =
   _libcrash._msg_error;
 
-function
+async function
   _safely_serve(
     _key_private_path,
     _keys_length,
