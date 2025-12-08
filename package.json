@@ -87,7 +87,7 @@
     "build-fs-worker":
       "npx webpack --mode 'production' --config 'fs-worker.webpack.config.cjs' --stats-error-details",
     "build-lib":
-      "npx webpack --mode 'production' --config 'libcert-gen.webpack.config.cjs' --stats-error-details",
+      "npx webpack --mode 'production' --config 'libserves.webpack.config.cjs' --stats-error-details",
     "build-bin":
       "npx webpack --mode 'production' --config 'webpack.config.cjs' --stats-error-details",
     "build":
