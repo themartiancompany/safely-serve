@@ -20,17 +20,17 @@
 [comment]: <> (If not, see <https://www.gnu.org/licenses/>.)
 
 
-# Certificate Tools (`cert-tools`)
+# Serve Safely (`serves`)
 
-Set of Javascript commands which
-replace some from `openssl`.
+A Serve extension which
+auto-generate a new
+self-signed certificate
+when none is provided.
 
-- `cert-gen`:
-    generates private/public key pairs and X.509
-    certificates for HTTP web servers using
-    [Forge](
-      https://github.com/digitalbazaar/forge)
-    Javascript TLS implementation.
+Certificates generation
+is handled using
+[Certificate Tools](
+  https://github.com/themartiancompany/cert-tools).
 
 It works both in Node.js and in web browsers
 using the
@@ -47,27 +47,27 @@ with the following command:
 npm \
   install \
     --save \
-    cert-tools
+    serves
 ```
 
 You can then run the program with
 
 ```bash
 npx \
-  "cert-gen"
+  "serves"
 ```
 
-or just with `cert-gen` if you install
+or just with `serves` if you install
 the program system-wide using npm from this source
 repository or from the
 [NPM Registry](
-  https://www.npmjs.com/package/cert-tools)
+  https://www.npmjs.com/package/serves)
 
 ```
 npm \
   -g \
   install \
-    "cert-tools"
+    "serves"
 ```
 
 or if using GNU make in this repository
@@ -89,7 +89,7 @@ package from the
 
 ```bash
 ur \
-  tmcsplit
+  serves
 ```
 
 ### Documentation
@@ -98,7 +98,7 @@ Upon installation the manual can be accessed with
 
 ```bash
 man \
-  cert-gen
+  serves
 ```
 
 # License
