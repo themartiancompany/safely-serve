@@ -42,37 +42,62 @@ unique to that specific directory.
 Options
 ==================
 
--l, --listen listen-uri     Specify a URI endpoint on
-                            which to listen (see below);
-                            more than one may be specified to
-                            listen in multiple places.
--p                          Specify custom port
--s, --single                Rewrite all not-found requests
-                            to 'index.html'.
--d, --debug                 Show debugging information.
--c, --config                Specify custom path to 'serve.json'.
--L, --no-request-logging    Do not log any request information
-                            to the console.
--C, --cors                  Enable CORS, sets
-                            'Access-Control-Allow-Origin' to '*'.
--n, --no-clipboard          Do not copy the local address
-                            to the clipboard.
--u, --no-compression        Do not compress files.
---no-etag                   Send 'Last-Modified' header
-                            instead of `ETag`.
--S, --symlinks              Resolve symlinks instead of
-                            showing 404 errors.
---ssl-cert                  Optional path to an SSL/TLS
-                            certificate to serve with HTTPS.
-                            Supported formats: PEM (default)
-                            and PKCS12 (PFX)
---ssl-key                   Optional path to the SSL/TLS
-                            certificate's private key.
-                            Applicable only for PEM certificates.
---ssl-pass                  Optional path to the SSL/TLS
-                            certificate's passphrase.
---no-port-switching         Do not open a port other than
-                            the one specified when it's taken.
+-l, --listen=URI                Specify a URI endpoint on
+                                which to listen (see below);
+                                more than one may be specified to
+                                listen in multiple places.
+-p, --port=PORT                 Specify custom port
+-s, --single                    Rewrite all not-found requests
+                                to 'index.html'.
+-d, --debug                     Show debugging information.
+-c, --config=PATH               Specify custom path to 'serve.json'.
+-L, --no-request-logging        Do not log any request information
+                                to the console.
+-C, --cors                      Enable CORS, sets
+                                'Access-Control-Allow-Origin' to '*'.
+-n, --no-clipboard              Do not copy the local address
+                                to the clipboard.
+-u, --no-compression            Do not compress files.
+-e, --no-etag                   Send 'Last-Modified' header
+                                instead of `ETag`.
+-S, --symlinks                  Resolve symlinks instead of
+                                showing 404 errors.
+--no-port-switching             Do not open a port other than
+                                the one specified when it's taken.
+
+
+SSL options
+==============
+
+-g, --cert-gen                  If enabled, generate self-signed certificate
+                                at the specified path.
+-I, --ssl-cert=PATH             Optional path to an SSL/TLS
+                                certificate to serve with HTTPS.
+                                Supported formats: PEM (default)
+                                and PKCS12 (PFX)
+-i, --ssl-key=PATH              Optional path to the SSL/TLS
+                                certificate's private key.
+                                Applicable only for PEM certificates.
+-k, --ssl-pass=PATH             Optional path to the SSL/TLS
+                                certificate's passphrase.
+-l, --keys-length=N             Keys pair length.
+
+
+Certificate options
+=======================
+
+-B, --validity-start=DATE       Set activation date.
+-E, --validity-end=DATE         Set expiration date.
+-D, --domain-name=DOMAIN        Set domain name.
+-C, --country-name=COUNTRY      Set country name.
+-S, --state-name=STATE          Set state name.
+-L, --locality-name=LOCALITY    Set locality name.
+-O, --organization-name=ORG     Set organization name.
+-U, --organization-unit=UNIT    Set organization unit.
+-s, --serial-number=SERIAL      Set serial number.
+
+Application options
+=======================
 
 -v, --version               Displays the current version of
                             Safely Serve.
