@@ -101,7 +101,7 @@
     "publish-pnm":
       "npm run build && npm publish --access public",
     "start":
-      "safely-serve -d .",
+      "npx safely-serve -d .",
     "test":
       "echo \"Error: no test specified\" && exit 1"
   }
