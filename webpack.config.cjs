@@ -23,6 +23,10 @@ const
       _output_file_name
 };
 const
+  _child_process_ignore =
+  { resourceRegExp:
+      /^node:child_process$/ };
+const
   _utils_ignore =
   { resourceRegExp:
       /^utils$/ };
@@ -49,6 +53,10 @@ const
 const
   _ignore_plugin =
     _webpack.IgnorePlugin; 
+const
+  _child_process_ignore_plugin =
+    new _ignore_plugin(
+          _child_process_ignore);
 const
   _serve_ignore_plugin =
     new _ignore_plugin(
@@ -109,6 +117,8 @@ module.exports = {
           'node_modules/yargs-parser/browser.mjs'),
     },
     fallback: {
+      "node:child_process":
+        false,
       "serve":
         false,
       "utils":
@@ -122,11 +132,14 @@ module.exports = {
     }
   },
   externals:
-    { serve:
+    { "node:child_process":
+        "node:child_process",
+      "serve":
         'serve',
-      yargs:
+      "yargs":
         'yargs' },
   plugins: [
+    _child_process_ignore_plugin,
     _serve_ignore_plugin,
     _yargs_ignore_plugin,
     _yargs_helpers_ignore_plugin

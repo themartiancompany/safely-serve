@@ -42,7 +42,7 @@ const
 const
   _child_process_ignore_plugin =
     new _ignore_plugin(
-          _child_process);
+          _child_process_ignore);
 const
   _serve_ignore_plugin =
     new _ignore_plugin(
