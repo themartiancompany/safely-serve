@@ -2,7 +2,7 @@
   "name":
     "safely-serve",
   "version":
-    "0.0.2",
+    "0.0.3",
   "description":
     "Serve extension which auto-generates self-signed OpenSSL certificates' at runtime",
   "funding": {
@@ -63,8 +63,6 @@
       "^0.0.3",
     "eslint":
       "^9.32.0",
-    "parcel":
-      "^2.16.0",
     "webpack":
       "^5.102.1",
     "webpack-cli":
@@ -103,7 +101,7 @@
     "publish-pnm":
       "npm run build && npm publish --access public",
     "start":
-      "npx parcel serve index.html --port 3000 --https --no-cache",
+      "safely-serve -d .",
     "test":
       "echo \"Error: no test specified\" && exit 1"
   }
