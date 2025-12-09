@@ -16,6 +16,10 @@ const
   _output_file_name =
     `${_input_file_name}.js`;
 const
+  _child_process_ignore =
+  { resourceRegExp:
+      /^node:child_process$/ };
+const
   _serve_ignore =
   { resourceRegExp:
       /^serve$/ };
@@ -35,6 +39,10 @@ const
 const
   _ignore_plugin =
     _webpack.IgnorePlugin; 
+const
+  _child_process_ignore_plugin =
+    new _ignore_plugin(
+          _child_process);
 const
   _serve_ignore_plugin =
     new _ignore_plugin(
@@ -78,6 +86,8 @@ module.exports = {
           'node_modules/serve/build/main.js'),
     },
     fallback: {
+      "node:child_process":
+        false,
       "serve":
         false,
       "utils":
@@ -94,6 +104,7 @@ module.exports = {
     { yargs:
         'yargs' },
   plugins: [
+    _child_process_ignore_plugin,
     _serve_ignore_plugin,
     _yargs_ignore_plugin,
     _yargs_helpers_ignore_plugin
