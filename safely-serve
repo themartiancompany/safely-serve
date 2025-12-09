@@ -52,11 +52,39 @@ function
   _global_variables() {
   app_name =
     "safely-serve";
-  target_certificate =
-    "";
   target_directory =
     "";
-  key_private =
+  listen_uris =
+    [];
+  target_port =
+    "";
+  index_redirect =
+    "";
+  debug_enabled =
+    "";
+  config_file =
+    "";
+  logging_disabled =
+    "";
+  cors_enabled =
+    "";
+  clipboard_disabled =
+    "";
+  compression_disabled =
+    "";
+  etag_disabled =
+    "";
+  symlinks_enabled =
+    "";
+  ssl_cert =
+    "";
+  ssl_key =
+    "";
+  ssl_pass =
+    "";
+  cert_gen =
+    "";
+  port_switching_disabled =
     "";
   keys_length =
     "";
@@ -78,40 +106,111 @@ function
     "";
   organization_unit =
     "";
-  output_file =
+  cache_dir =
     "";
   quiet =
     "";
 }
 
 function
-  _target_certificate_auto_detect(
+  _cache_dir_auto_detect() {
+  return _homedir() +
+         `/.cache/${app_name}`;
+}
+
+function
+  _work_dir_get(
     _target_directory) {
   let
-    _target_directory_encoded,
-    _target_certificate;
-  _target_certificate =
-    target_certificate;
-  if ( _target_certificate == "" ) {
-    _target_directory_encoded =
-      _path_encode(
-        target_directory);
-    _target_certificate =
-      _homedir() +
-      `/.cache/${app_name}/${_target_directory_encoded}`;
+    _work_dir;
+  _target_directory_encoded =
+    _path_encode(
+      target_directory);
+  _work_dir =
+    _path_join( [
+      cache_dir,
+      _target_directory_encoded ]);
+  return _work_dir;
+}
+
+function
+  _ssl_config_auto_detect() {
+  let
+    _work_dir;
+  _work_dir =
+    _work_dir_get(
+      target_directory);
+  if ( ssl_cert == "" ) {
+    ssl_cert =
+      `${_work_dir}/cert.pem`;
+    if ( cert_gen == "" ) {
+      cert_gen =
+        "y";
+    }
   }
-  return _target_certificate;
+  else {
+    cert_gen =
+      "n";
+  }
+  if ( ssl_cert == "" ) {
+    ssl_cert =
+      `${_work_dir}/cert.pem`;
+  }
+  if ( ssl_key == "" ) {
+    ssl_key =
+      `${_work_dir}/key.pem`;
+  }
 }
 
 function 
   _overrides_set() {
+  cache_dir =
+    _cache_dir_auto_detect();
   if ( target_directory == "" ) {
     target_directory =
       process.cwd();
   }
-  target_certificate =
-    _target_certificate_auto_detect(
-      target_directory);
+  if ( target_port == "" ) {
+    target_port =
+      "3000";
+  }
+  if ( index_redirect == "" ) {
+    index_redirect =
+      "y";
+  }
+  if ( logging_disabled == "" ) {
+    logging_disabled =
+      "n";
+  }
+  if ( cors_enabled == "" ) {
+    cors_enabled =
+      "n";
+  }
+  if ( clipboard_disabled == "" ) {
+    clipboard_disabled =
+      "n";
+  }
+  if ( compression_disabled == "" ) {
+    compression_disabled =
+      "n";
+  }
+  if ( etag_disabled == "" ) {
+    etag_disabled =
+      "n";
+  }
+  if ( symlinks_enabled == "" ) {
+    symlinks_enabled =
+      "n";
+  }
+  _ssl_config_auto_detect();
+  if ( port_switching_disabled == "" ) {
+    port_switching_disabled =
+      "n";
+  }
+  if ( keys_length == "" ) {
+    keys_length =
+      "4096";
+  }
   if ( validity_min == "" ) {
     validity_min =
       new Date();
@@ -151,16 +250,6 @@ function
     organization_unit =
       "Index Development Team";
   }
-  if ( key_private == "" ) {
-    key_private =
-      process.cwd() +
-      "/key.pem";
-  }
-  if ( output_file == "" ) {
-    output_file =
-      process.cwd() +
-      "/cert.pem";
-  }
 }
 
 function
@@ -172,7 +261,24 @@ function
     `${app_name} configuration:`,
     `      Runtime environment:   ${runtime_environment}`,
     `         Target directory:   ${target_directory}`,
-    `       Target certificate:   ${target_certificate}`,
+    `          Serve options:`,
+    `              Listen URIs:   ${listen_uris}`,
+    `              Target port:   ${target_port}`,
+    `           Index redirect:   ${index_redirect}`,
+    `       Configuration file:   ${config_file}`,
+    `         Quiet stdout log:   ${logging_disabled}`,
+    `                     Cors:   ${cors_enabled}`,
+    `             No clipboard:   ${clipboard_disabled}`,
+    `           No compression:   ${compression_disabled}`,
+    `             Disable ETag:   ${etag_disabled}`,
+    `                 Symlinks:   ${symlinks_enabled}`,
+    `        No port switching:   ${port_switching_disabled}`,
+    `            SSL options:`,
+    `     Generate certificate:   ${cert_gen}`,
+    `          SSL Certificate:   ${ssl_cert}`,
+    `          SSL private key:   ${ssl_key}`,
+    `             Key password:   ${ssl_pass}`,
+    `    Certificate options:`,
     `               Key length:   ${keys_length}`,
     `            Serial number:   ${serial_number}`,
     `              Valid after:   ${validity_min}`,
@@ -183,7 +289,6 @@ function
     `                 Locality:   ${locality_name}`,
     `             Organization:   ${organization_name}`,
     `        Organization unit:   ${organization_unit}`,
-    `              Output file:   ${output_file}`,
   ];
   for ( _line of _text ) {
     _msg_info(
@@ -208,80 +313,87 @@ function
     "    <target-directory>",
     "",
     "  serve options:",
-    "     -l, --listen listen-uri         Specify a URI endpoint on",
-    "                                     which to listen (see below);",
-    "                                     more than one may be specified to",
-    "                                     listen in multiple places.",
-    `                                     Default: '${listen_uris}'`,
-    "     -p                              Specify custom port",
-    `                                     Default: '${target_port}'`,
-    "     -s, --single                    Rewrite all not-found requests",
-    "                                     to 'index.html'.",
-    `                                     Default: '${index_redirect}'`,
-    "     -d, --debug                     Show debugging information.",
-    `                                     Default: '${debug_enabled}'`,
-    "     -c, --config                    Specify custom path to 'serve.json'.",
-    `                                     Default: '${config_file}'`,
-    "     -L, --no-request-logging        Do not log any request information",
-    "                                     to the console.",
-    `                                     Default: '${logging_disabled}'`,
-    "     -C, --cors                      Enable CORS, sets",
-    "                                     'Access-Control-Allow-Origin' to '*'.",
-    `                                     Default: '${cors_enable}'`,
-    "     -n, --no-clipboard              Do not copy the local address",
-    "                                     to the clipboard.",
-    `                                     Default: '${clipboard_disable}'`,
-    "     -u, --no-compression            Do not compress files.",
-    `                                     Default: '${compression_disable}'`,
-    "     --no-etag                       Send 'Last-Modified' header",
-    "                                     instead of `ETag`.",
-    `                                     Default: '${no_etag}'`,
-    "     -S, --symlinks                  Resolve symlinks instead of",
-    "                                     showing 404 errors.",
-    `                                     Default: '${symlinks_enable}'`,
-    "     --ssl-cert                      Optional path to an SSL/TLS",
-    "                                     certificate to serve with HTTPS.",
-    "                                     Supported formats: PEM (default)",
-    "                                     and PKCS12 (PFX)",
-    `                                     Default: '${ssl_cert}'`,
-    "     --ssl-key                       Optional path to the SSL/TLS",
-    "                                     certificate's private key.",
-    "                                     Applicable only for PEM certificates.",
-    `                                     Default: '${ssl_key}'`,
-    "     --ssl-pass                      Optional path to the SSL/TLS",
-    "                                     certificate's passphrase.",
-    `                                     Default: '${ssl_pass}'`,
-    "     --no-port-switching             Do not open a port other than",
-    "                                     the one specified when it's taken.",
-    `                                     Default: '${port_switching_disabled}'`,
-    "     -N, --keys-length=N             Generated keys pair length.",
-    `                                     Default: '${keys_length}'`,
+    "     -l, --listen=URI               Specify a URI endpoint on",
+    "                                    which to listen (see below);",
+    "                                    more than one may be specified to",
+    "                                    listen in multiple places.",
+    `                                    Default: '${listen_uris}'`,
+    "     -p, --port=PORT                Specify custom port",
+    `                                    Default: '${target_port}'`,
+    "     -s, --single                   Rewrite all not-found requests",
+    "                                    to 'index.html'.",
+    `                                    Default: '${index_redirect}'`,
+    "     -d, --debug                    Show debugging information.",
+    `                                    Default: '${debug_enabled}'`,
+    "     -c, --config=PATH              Specify custom path to 'serve.json'.",
+    `                                    Default: '${config_file}'`,
+    "     -L, --no-request-logging       Do not log any request information",
+    "                                    to the console.",
+    `                                    Default: '${logging_disabled}'`,
+    "     -C, --cors                     Enable CORS, sets",
+    "                                    'Access-Control-Allow-Origin'",
+    "                                    to '*'.",
+    `                                    Default: '${cors_enabled}'`,
+    "     -n, --no-clipboard             Do not copy the local address",
+    "                                    to the clipboard.",
+    `                                    Default: '${clipboard_disabled}'`,
+    "     -u, --no-compression           Do not compress files.",
+    `                                    Default: '${compression_disabled}'`,
+    "     -e, --no-etag                  Send 'Last-Modified' header",
+    "                                    instead of `ETag`.",
+    `                                    Default: '${etag_disabled}'`,
+    "     -S, --symlinks                 Resolve symlinks instead of",
+    "                                    showing 404 errors.",
+    `                                    Default: '${symlinks_enabled}'`,
+    "     --no-port-switching            Do not open a port other than",
+    "                                    the one specified when it's taken.",
+    `                                    Default: '${port_switching_disabled}'`,
+    "  ssl options:",
+    "     -g, --gen-cert                 If enabled, generate self-signed certificate",
+    "                                    at the specified path.",
+    `                                    Default: '${cert_gen}'`,
+    "     -I, --ssl-cert=PATH            Optional path to an SSL/TLS",
+    "                                    certificate to serve with HTTPS.",
+    "                                    Supported formats: PEM (default)",
+    "                                    and PKCS12 (PFX)",
+    `                                    Default: '${ssl_cert}'`,
+    "     -i, --ssl-key=PATH             Optional path to the SSL/TLS",
+    "                                    certificate's private key.",
+    "                                    Applicable only for PEM certificates.",
+    `                                    Default: '${ssl_key}'`,
+    "     -k --ssl-pass=PATH             Optional path to the SSL/TLS",
+    "                                    certificate's passphrase.",
+    `                                    Default: '${ssl_pass}'`,
     "",
     "  certificate options:",
-    "     -B, --validity-start=DATE       Set activation date.",
-    `                                     Default: '${validity_min}'`,
-    "     -E, --validity-end=DATE         Set expiration date.",
-    `                                     Default: '${validity_max}'`,
-    "     -D, --domain-name=DOMAIN        Set domain name.",
-    `                                     Default: '${domain_name}'`,
-    "     -C, --country-name=COUNTRY      Set country name.",
-    `                                     Default: '${country_name}'`,
-    "     -S, --state-name=STATE          Set state name.",
-    `                                     Default: '${state_name}'`,
-    "     --locality-name=LOCALITY        Set locality name.",
-    `                                     Default: '${locality_name}'`,
-    "     -O, --organization-name=ORG     Set organization name.",
-    `                                     Default: '${organization_name}'`,
-    "     -U, --organization-unit=UNIT    Set organization unit.",
-    `                                     Default: '${organization_unit}'`,
-    "     --serial-number=SERIAL          Set serial number.",
-    `                                     Default: '${serial_number}'`,
+    "     -N, --keys-length=N            Generated keys pair length.",
+    `                                    Default: '${keys_length}'`,
+    "     -B, --validity-min=DATE        Set activation date.",
+    `                                    Default: '${validity_min}'`,
+    "     -E, --validity-max=DATE        Set expiration date.",
+    `                                    Default: '${validity_max}'`,
+    "     -D, --domain-name=DOMAIN       Set domain name.",
+    `                                    Default: '${domain_name}'`,
+    "     -C, --country-name=COUNTRY     Set country name.",
+    `                                    Default: '${country_name}'`,
+    "     -S, --state-name=STATE         Set state name.",
+    `                                    Default: '${state_name}'`,
+    "     --locality-name=LOCALITY       Set locality name.",
+    `                                    Default: '${locality_name}'`,
+    "     -O, --organization-name=ORG    Set organization name.",
+    `                                    Default: '${organization_name}'`,
+    "     -U, --organization-unit=UNIT   Set organization unit.",
+    `                                    Default: '${organization_unit}'`,
+    "     -X, --serial-number=SERIAL     Set serial number.",
+    `                                    Default: '${serial_number}'`,
     "",
-    "     -W, --cache-dir                 Work directory.",
-    `                                     Default: '${cache_dir}'`,
-    "     -v, --version                   Displays the current version of",
-    "                                     Safely Serve.",
-    "         --help                      Shows this help message.",
+    "  application options:",
+    "     -N, --keys-length=N            Generated keys pair length.",
+    "     -W, --cache-dir                Work directory.",
+    `                                    Default: '${cache_dir}'`,
+    "     -v, --version                  Displays the current version of",
+    "                                    Safely Serve.",
+    "     -h, --help                     Shows this help message.",
     "",
   ];
   for ( _line of _text ) {
@@ -312,6 +424,20 @@ function
 }
 
 function
+  _cmdline_parse_debug(
+    _argv) {
+  debug_enabled =
+    _opt_read(
+      _argv,
+      "d",
+      "debug");
+  if ( debug_enabled ) {
+    quiet =
+      "n";
+  }
+}
+
+function
   _input_args_check(
     _argv) {
   if ( _argv[
@@ -327,7 +453,8 @@ function
 }
 
 function
-  _target_directory_auto_detect() {
+  _target_directory_auto_detect(
+    _argv) {
   let
     _target_directory;
   _target_directory =
@@ -343,6 +470,39 @@ function
   return _target_directory;
 }
 
+function
+  _opt_read(
+  _argv,
+  _letter_opt,
+  _word_opt) {
+  let
+    _value;
+  if ( _letter_opt in _argv &&
+       _word_opt in _argv ) {
+    _msg =
+      `You can only use ` +
+      `'${_letter_opt}' or '--${_word-opt}'`;
+    _msg_error(
+      _msg,
+      1);
+  }
+  if ( _letter_opt in _argv ) {
+    _value =
+      _argv[
+        _letter_opt];
+  }
+  if ( _word_opt in _argv ) {
+    _value =
+      _argv[
+        _word_opt];
+  }
+  if ( typeof _value === 'undefined' ) {
+    _value =
+      "";
+  }
+  return _value;
+}
+
 function 
   _cmdline_parse() {
   let
@@ -355,143 +515,138 @@ function
     "y";
   runtime_environment =
     "node";
+  _cmdline_parse_debug(
+    _argv);
   _cmdline_parse_help(
     _argv);
-  _target_directory =
-    _argv[
-      "_"][
-        0];
-  if ( typeof _target_directory === 'undefined' ) {
-    target_directory =
-      _argv[
-        "_"][
-          0];
-  }
-  // _input_args_check(
-  //   _argv);
-  // input_file =
-  //   _argv[
-  //     "_"][
-  //       0];
-  if ( "i" in _argv ) {
-    key_private =
-      _argv[
-        "i"];
-  }
-  if ( "key-private" in _argv ) {
-    key_private =
-      _argv[
-        "key-private"];
-  }
-  if ( "l" in _argv ) {
-    keys_length =
-      _argv[
-        "l"];
-  }
-  if ( "keys-length" in _argv ) {
-    keys_length =
-      _argv[
-        "keys-length"];
-  }
-  if ( "B" in _argv ) {
-    validity_min =
-      _argv[
-        "B"];
-  }
-  if ( "validity-max" in _argv ) {
-    validity_max =
-      _argv[
-        "validity-max"];
-  }
-  if ( "D" in _argv ) {
-    domain_name =
-      _argv[
-        "D"];
-  }
-  if ( "domain-name" in _argv ) {
-    domain_name =
-      _argv[
-        "domain-name"];
-  }
-  if ( "C" in _argv ) {
-    country_name =
-      _argv[
-        "C"];
-  }
-  if ( "country-name" in _argv ) {
-    country_name =
-      _argv[
-        "country-name"];
-  }
-  if ( "S" in _argv ) {
-    state_name =
-      _argv[
-        "S"];
-  }
-  if ( "state-name" in _argv ) {
-    country_name =
-      _argv[
-        "state-name"];
-  }
-  if ( "L" in _argv ) {
-    locality_name =
-      _argv[
-        "L"];
-  }
-  if ( "locality-name" in _argv ) {
-    locality_name =
-      _argv[
-        "locality-name"];
-  }
-  if ( "O" in _argv ) {
-    organization_name =
-      _argv[
-        "O"];
-  }
-  if ( "organization-name" in _argv ) {
-    organization_name =
-      _argv[
-        "organization-name"];
-  }
-  if ( "U" in _argv ) {
-    organization_unit =
-      _argv[
-        "U"];
-  }
-  if ( "organization-unit" in _argv ) {
-    organization_unit =
-      _argv[
-        "organization-unit"];
-  }
-  if ( "o" in _argv ) {
-    output_file =
-      _argv[
-        "o"];
-  }
-  if ( "output-file" in _argv ) {
-    output_file =
-      _argv[
-        "output-file"];
-  }
-  if ( "s" in _argv ) {
-    serial_number =
-      _argv[
-        "s"];
-  }
-  if ( "serial-number" in _argv ) {
-    serial_number =
-      _argv[
-        "serial-number"];
-  }
-  verbose =
-    _argv[
-      "verbose"] ||
-    _argv[
-      "v"];
-  if ( verbose ) {
-    quiet =
-      "n";
-  }
+  target_directory =
+    _target_directory_auto_detect(
+      _argv);
+  listen_uris =
+    _opt_read(
+      _argv,
+      "l",
+      "listen");
+  target_port =
+    _opt_read(
+      _argv,
+      "p",
+      "port");
+  target_port =
+    _opt_read(
+      _argv,
+      "p",
+      "port");
+  index_redirect =
+    _opt_read(
+      _argv,
+      "s",
+      "single");
+  config_file =
+    _opt_read(
+      _argv,
+      "c",
+      "config");
+  logging_disabled =
+    _opt_read(
+      _argv,
+      "L",
+      "no-request-logging");
+  cors_enabled =
+    _opt_read(
+      _argv,
+      "C",
+      "cors");
+  clipboard_disabled =
+    _opt_read(
+      _argv,
+      "n",
+      "no-clipboard");
+  compression_disabled =
+    _opt_read(
+      _argv,
+      "u",
+      "no-compression");
+  etag_disabled =
+    _opt_read(
+      _argv,
+      "e",
+      "no-etag");
+  symlinks_enabled =
+    _opt_read(
+      _argv,
+      "S",
+      "symlinks");
+  ssl_cert =
+    _opt_read(
+      _argv,
+      "I",
+      "ssl-cert");
+  ssl_key =
+    _opt_read(
+      _argv,
+      "i",
+      "ssl-key");
+  ssl_pass =
+    _opt_read(
+      _argv,
+      "k",
+      "ssl-pass");
+  keys_length =
+    _opt_read(
+      _argv,
+      "l",
+      "keys-length");
+  validity_min =
+    _opt_read(
+      _argv,
+      "B",
+      "validity-min");
+  validity_max =
+    _opt_read(
+      _argv,
+      "E",
+      "validity-max");
+  domain_name =
+    _opt_read(
+      _argv,
+      "D",
+      "domain-name");
+  country_name =
+    _opt_read(
+      _argv,
+      "C",
+      "country-name");
+  state_name =
+    _opt_read(
+      _argv,
+      "S",
+      "state-name");
+  locality_name =
+    _opt_read(
+      _argv,
+      "L",
+      "locality-name");
+  organization_name =
+    _opt_read(
+      _argv,
+      "O",
+      "organization-name");
+  organization_unit =
+    _opt_read(
+      _argv,
+      "U",
+      "organization-unit");
+  serial_number =
+    _opt_read(
+      _argv,
+      "X",
+      "serial-number");
+  cache_dir =
+    _opt_read(
+      _argv,
+      "W",
+      "cache-dir");
 }
 
 function
@@ -506,21 +661,60 @@ function
     _argv_url_get(
       "target_directory")[
         0];
-  target_certificate =
+  listen_uris =
     _argv_url_get(
-      "target_certificate")[
+      "listen");
+  target_port =
+    _argv_url_get(
+      "port")[
         0];
-  key_private =
+  index_redirect =
     _argv_url_get(
-      "key_private")[
+      "single")[
+        0];
+  config_file =
+    _argv_url_get(
+      "config_file")[
+        0];
+  compression_disabled =
+    _argv_url_get(
+      "no_compression")[
+        0];
+  etag_disabled =
+    _argv_url_get(
+      "no_etag")[
+        0];
+  logging_disabled =
+    _argv_url_get(
+      "no_request_logging")[
+        0];
+  cors_enabled =
+    _argv_url_get(
+      "cors")[
+        0];
+  clipboard_disabled =
+    _argv_url_get(
+      "no_clipboard")[
+        0];
+  ssl_cert =
+    _argv_url_get(
+      "ssl_cert")[
+        0];
+  port_switching_disabled =
+    _argv_url_get(
+      "no_compression")[
+        0];
+  symlinks_enabled =
+    _argv_url_get(
+      "symlinks")[
+        0];
+  ssl_key =
+    _argv_url_get(
+      "ssl_key")[
         0];
   keys_length =
     _argv_url_get(
       "keys_length")[
-        0];
-  output_file =
-    _argv_url_get(
-      "output_file")[
         0];
   validity_min =
     _argv_url_get(
@@ -554,6 +748,10 @@ function
     _argv_url_get(
       "serial_number")[
         0];
+  cache_dir =
+    _argv_url_get(
+      "cache_dir")[
+        0];
   quiet =
     _argv_url_get(
       "quiet");
@@ -575,8 +773,22 @@ _overrides_set();
 _config_show();
 app_opts = [
   target_directory,
-  target_certificate,
-  key_private,
+  listen_uris,
+  target_port,
+  index_redirect,
+  debug_enabled,
+  config_file,
+  logging_disabled,
+  cors_enabled,
+  clipboard_disabled,
+  compression_disabled,
+  etag_disabled,
+  symlinks_enabled,
+  cert_gen,
+  ssl_cert,
+  ssl_key,
+  ssl_pass,
+  port_switching_disabled,
   keys_length,
   serial_number,
   validity_min,
@@ -586,8 +798,7 @@ app_opts = [
   state_name,
   locality_name,
   organization_name,
-  organization_unit,
-  output_file,
+  organization_unit
 ];
 _safely_serve.apply(
   null,

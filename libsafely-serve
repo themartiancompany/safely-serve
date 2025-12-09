@@ -22,15 +22,23 @@
 //    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 const
+  { spawn } =
+    require(
+      "node:child_process");
+_spawn =
+  spawn;
+const
+  _cert_tools_module =
+    require(
+      'cert-tools');
+_cert_gen =
+  _cert_tools_module._cert_gen;
+const
   _sha_module =
     require(
       'js-sha256');
 _sha256 =
   _sha_module.sha256;
-const
-  _cert_tools_module =
-    require(
-      'cert-tools');
 const
   _libcrash =
   require(
@@ -69,11 +77,124 @@ function
   return _string;
 }
 
+function
+  _serve(
+    _target_directory,
+    _listen_uris,
+    _target_port,
+    _index_redirect,
+    _debug_enabled,
+    _config_file,
+    _logging_disabled,
+    _cors_enabled,
+    _clipboard_disable,
+    _compression_disable,
+    _no_etags,
+    _symlinks_enabled,
+    _ssl_cert,
+    _ssl_key,
+    _ssl_pass,
+    _port_switching_disabled) {
+  let
+    _cmd,
+    _cmd_args,
+    _serve_process,
+    _uri;
+  for ( _uri of _listen_uris ) {
+    _cmd_args.push(
+      "-l",
+      _uri);
+  }
+  _cmd_args.push(
+    "--port",
+    _target_port);
+  if ( _index_redirect == "y" ) {
+    _cmd_args.push(
+      "--single");
+  }
+  if ( _debug_enabled != "n" ) {
+    _cmd_args.push(
+      "--debug");
+  }
+  if ( _config_file != "" ) {
+    _cmd_args.push(
+      "--config",
+      _config_file);
+  }
+  if ( _logging_disabled == "y" ) {
+    _cmd_args.push(
+      "--no-request-logging");
+  }
+  if ( _cors_enabled == "y" ) {
+    _cmd_args.push(
+      "--cors");
+  }
+  if ( _clipboard_disabled == "y" ) {
+    _cmd_args.push(
+      "--no-clipboard");
+  }
+  if ( _compression_disabled == "y" ) {
+    _cmd_args.push(
+      "--no-compression");
+  }
+  if ( _etag_disabled == "y" ) {
+    _cmd_args.push(
+      "--no-etag");
+  }
+  if ( _symlinks_enabled == "y" ) {
+    _cmd_args.push(
+      "--symlinks");
+  }
+  if ( _port_switching_disabled == "y" ) {
+    _cmd_args.push(
+      "--no-port-switching");
+  }
+  if ( _ssl_cert != "" ) {
+    _cmd_args.push(
+      "--ssl-cert",
+      ssl_cert);
+  }
+  if ( _ssl_key != "" ) {
+    _cmd_args.push(
+      "--ssl-key",
+      ssl_key);
+  }
+  if ( _ssl_pass != "" ) {
+    _cmd_args.push(
+      "--ssl-pass",
+      ssl_pass);
+  }
+  _serve_process =
+    _spawn(
+      _cmd,
+      _cmd_opts);
+  _serve_process.stdout.on(
+    'data',
+    (data) => {
+      console.log(
+        `${data}`);
+    });
+}
+
 async function
   _safely_serve(
     _target_directory,
-    _target_certificate,
-    _key_private_path,
+    _listen_uris,
+    _target_port,
+    _index_redirect,
+    _debug_enabled,
+    _config_file,
+    _logging_disabled,
+    _cors_enabled,
+    _clipboard_disable,
+    _compression_disable,
+    _no_etags,
+    _symlinks_enabled,
+    _cert_new,
+    _ssl_cert,
+    _ssl_key,
+    _ssl_pass,
+    _port_switching_disabled,
     _keys_length,
     _serial_number,
     _validity_min,
@@ -83,8 +204,7 @@ async function
     _state_name,
     _locality_name,
     _organization_name,
-    _organization_unit,
-    _output_file) {
+    _organization_unit) {
   let
     _alt_names,
     _attrs,
@@ -101,9 +221,20 @@ async function
     _serve,
     _subject_alt_name,
     _subject_key_identifier;
-  _serve =
-    import(
-      'serve');
+  if ( ! _file_exists(
+           _ssl_cert) &&
+       _cert_new == "y" ) {
+    _cert_gen(
+    );
+  }
+  // _serve =
+  //   import(
+  //     'serve');
+  // if ( _ssl_cert != "" &&
+  //      ( ! _file_exists(
+  //        _ssl_cert) ) ) {
+  //   
+  // }
   _keys_length =
     Number(
       _keys_length);
