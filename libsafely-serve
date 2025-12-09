@@ -43,22 +43,12 @@ const
   _libcrash =
   require(
     'crash-js');
+_dirname =
+  _libcrash._dirname;
 _error_display =
   _libcrash._error_display;
-_ext_rm =
-  _libcrash._ext_rm;
 _file_exists =
   _libcrash._file_exists;
-_file_read =
-  _libcrash._file_read;
-_file_write =
-  _libcrash._file_write;
-_fs_worker_start =
-  _libcrash._fs_worker_start;
-_json_read =
-  _libcrash._json_read;
-_ls =
-  _libcrash._ls;
 _mkdir =
   _libcrash._mkdir;
 _msg_info =
@@ -78,7 +68,41 @@ function
 }
 
 function
-  _serve(
+  _serve_close_callback_get(
+    _output) {
+  let
+    _close_callback;
+  _close_callback =
+    function(
+      _code) {
+    console.log(
+      `Exit code: ${_code}`);
+    console.log(
+      `Output: ${_output}`);
+  };
+  return _close_callback;
+}
+
+function
+  _serve_data_callback_get(
+    _output) {
+  let
+    _data_callback;
+  _data_callback =
+    function(
+      _data) {
+    _data =
+      _data.toString();
+    console.log(
+      _data);
+    _output +=
+      _data;
+  };
+  return _data_callback;
+}
+
+function
+  _npx_cmdline_get(
     _target_directory,
     _listen_uris,
     _target_port,
@@ -87,26 +111,26 @@ function
     _config_file,
     _logging_disabled,
     _cors_enabled,
-    _clipboard_disable,
-    _compression_disable,
-    _no_etags,
+    _clipboard_disabled,
+    _compression_disabled,
+    _etag_disabled,
     _symlinks_enabled,
     _ssl_cert,
     _ssl_key,
     _ssl_pass,
     _port_switching_disabled) {
   let
-    _cmd,
-    _cmd_args,
-    _serve_process,
-    _uri;
+    _cmd_args;
+  _cmd_args = [
+    "serve"
+  ];
   for ( _uri of _listen_uris ) {
     _cmd_args.push(
       "-l",
       _uri);
   }
   _cmd_args.push(
-    "--port",
+    "-p",
     _target_port);
   if ( _index_redirect == "y" ) {
     _cmd_args.push(
@@ -164,16 +188,69 @@ function
       "--ssl-pass",
       ssl_pass);
   }
+
+}
+
+function
+  _serve(
+    _target_directory,
+    _listen_uris,
+    _target_port,
+    _index_redirect,
+    _debug_enabled,
+    _config_file,
+    _logging_disabled,
+    _cors_enabled,
+    _clipboard_disabled,
+    _compression_disabled,
+    _etag_disabled,
+    _symlinks_enabled,
+    _ssl_cert,
+    _ssl_key,
+    _ssl_pass,
+    _port_switching_disabled) {
+  let
+    _cmd,
+    _cmd_args,
+    _output,
+    _serve_process,
+    _uri;
+  _cmd =
+    "npx";
+  _cmd_args =
+    _npx_cmdline_get(
+      _target_directory,
+      _listen_uris,
+      _target_port,
+      _index_redirect,
+      _debug_enabled,
+      _config_file,
+      _logging_disabled,
+      _cors_enabled,
+      _clipboard_disabled,
+      _compression_disabled,
+      _etag_disabled,
+      _symlinks_enabled,
+      _ssl_cert,
+      _ssl_key,
+      _ssl_pass,
+      _port_switching_disabled);
   _serve_process =
     _spawn(
       _cmd,
-      _cmd_opts);
+      _cmd_args);
+  _serve_data_callback =
+    _serve_data_callback_get(
+      _output);
   _serve_process.stdout.on(
     'data',
-    (data) => {
-      console.log(
-        `${data}`);
-    });
+    _serve_data_callback);
+  _serve_close_callback =
+    _serve_close_callback_get(
+      _output);
+  _serve_process.stdout.on(
+    'close',
+    _serve_close_callback);
 }
 
 async function
@@ -186,9 +263,9 @@ async function
     _config_file,
     _logging_disabled,
     _cors_enabled,
-    _clipboard_disable,
-    _compression_disable,
-    _no_etags,
+    _clipboard_disabled,
+    _compression_disabled,
+    _etag_disabled,
     _symlinks_enabled,
     _cert_new,
     _ssl_cert,
@@ -206,79 +283,72 @@ async function
     _organization_name,
     _organization_unit) {
   let
-    _alt_names,
-    _attrs,
-    _basic_constraints,
-    _cert,
-    _ext_key_usage,
-    _key_usage,
-    _key_pem,
-    _key_private,
-    _keys,
-    _keys_pem,
-    _ns_cert_type,
-    _pem,
-    _serve,
-    _subject_alt_name,
-    _subject_key_identifier;
+    _cert_gen_opts,
+    _mkdir_args,
+    _mkdir_opts,
+    _serve_opts;
   if ( ! _file_exists(
            _ssl_cert) &&
        _cert_new == "y" ) {
-    _cert_gen(
-    );
+    _mkdir_opts =
+      { "recursive":
+          true,
+        "mode":
+          0700 };
+    _mkdir_args = [
+      _dirname(
+        _ssl_cert),
+      _mkdir_opts
+    ];
+    _mkdir.apply(
+      null,
+      _mkdir_args);
+    _cert_gen_opts = [
+      _ssl_key,
+      _keys_length,
+      _serial_number,
+      _validity_min,
+      _validity_max,
+      _domain_name,
+      _country_name,
+      _state_name,
+      _locality_name,
+      _organization_name,
+      _organization_unit,
+      _ssl_cert
+    ];
+    await _cert_gen.apply(
+      null,
+      _cert_gen_opts);
   }
-  // _serve =
-  //   import(
-  //     'serve');
-  // if ( _ssl_cert != "" &&
-  //      ( ! _file_exists(
-  //        _ssl_cert) ) ) {
-  //   
-  // }
-  _keys_length =
-    Number(
-      _keys_length);
-  if ( _key_private_path == "" ||
-       ! _file_exists(
-           _key_private_path) ) {
-    _keys =
-      _rsa.generateKeyPair(
-        _keys_length);
-    _key_pem =
-      _pki.privateKeyToPem(
-        _keys.privateKey);
-    _file_write(
-      _key_private_path,
-      _key_pem);
-    _key_private =
-      _keys.privateKey;
-  }
-  else {
-    _key_pem =
-      _file_read(
-        _key_private_path);
-    _key_private =
-      _pki.privateKeyFromPem(
-        _key_pem);
-    _keys =
-      { privateKey:
-          _key_private };
-  }
-  if ( _log_file != "" ) {
-    if ( typeof window !== 'undefined') {
-      await _fs_worker_start(
-          "fs-worker.js");
-    }
-    _file_write(
-      _log_file,
-      _whatever_log);
-  }
-  return true;
+  _serve_opts = [
+    _target_directory,
+    _listen_uris,
+    _target_port,
+    _index_redirect,
+    _debug_enabled,
+    _config_file,
+    _logging_disabled,
+    _cors_enabled,
+    _clipboard_disabled,
+    _compression_disabled,
+    _etag_disabled,
+    _symlinks_enabled,
+    _ssl_cert,
+    _ssl_key,
+    _ssl_pass,
+    _port_switching_disabled
+  ];
+  _serve.apply(
+    null,
+    _serve_opts);
 }
 
 module.exports = {
   _path_encode:
     _path_encode,
   _safely_serve:
-    _safely_serve
+    _safely_serve,
+  _serve:
+    _serve
 };

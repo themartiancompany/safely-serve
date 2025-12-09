@@ -474,7 +474,8 @@ function
   _opt_read(
   _argv,
   _letter_opt,
-  _word_opt) {
+  _word_opt,
+  _type) {
   let
     _value;
   if ( _letter_opt in _argv &&
@@ -499,6 +500,10 @@ function
   if ( typeof _value === 'undefined' ) {
     _value =
       "";
+    if ( _type === "list" ) {
+      _value =
+        [];
+    }
   }
   return _value;
 }
@@ -526,7 +531,8 @@ function
     _opt_read(
       _argv,
       "l",
-      "listen");
+      "listen",
+      "list");
   target_port =
     _opt_read(
       _argv,
