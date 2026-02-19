@@ -25,61 +25,77 @@ const
   { spawn } =
     require(
       "node:child_process");
-_spawn =
-  spawn;
+/*global _spawn*/
+const
+  _spawn =
+    spawn;
 const
   _cert_tools_module =
     require(
       'cert-tools');
-_cert_gen =
-  _cert_tools_module._cert_gen;
+/*global _cert_gen*/
+const
+  _cert_gen =
+    _cert_tools_module._cert_gen;
 const
   _sha_module =
     require(
       'js-sha256');
-_sha256 =
-  _sha_module.sha256;
+/*global _sha256*/
+const
+  _sha256 =
+    _sha_module.sha256;
 const
   _libcrash =
   require(
     'crash-js');
-_dirname =
-  _libcrash._dirname;
-_error_display =
-  _libcrash._error_display;
-_file_exists =
-  _libcrash._file_exists;
-_mkdir =
-  _libcrash._mkdir;
-_msg_info =
-  _libcrash._msg_info;
-_msg_error =
-  _libcrash._msg_error;
+/*global _dirname*/
+const
+  _dirname =
+    _libcrash._dirname;
+/*global _error_display*/
+const
+  _error_display =
+    _libcrash._error_display;
+/*global _file_exists*/
+const
+  _file_exists =
+    _libcrash._file_exists;
+/*global _mkdir*/
+const
+  _mkdir =
+    _libcrash._mkdir;
+/*global _msg_info*/
+const
+  _msg_info =
+    _libcrash._msg_info;
+/*global _msg_error*/
+const
+  _msg_error =
+    _libcrash._msg_error;
 
 function
   _path_encode(
     _path) {
-  let
-    _string;
-  _string =
-    _sha256(
-      _path + "\n");
+  const
+    _string =
+      _sha256(
+        _path + "\n");
   return _string;
 }
 
 function
   _serve_close_callback_get(
     _output) {
-  let
-    _close_callback;
-  _close_callback =
-    function(
-      _code) {
-    console.log(
-      `Exit code: ${_code}`);
-    console.log(
-      `Output: ${_output}`);
-  };
+  const
+    _close_callback =
+      function(
+        _code) {
+      console.log(
+        `Exit code: ${_code}`);
+      console.log(
+        `Output: ${_output}`);
+    };
   return _close_callback;
 }
 

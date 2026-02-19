@@ -27,6 +27,7 @@
  */
 
 /*eslint no-undef: "error"*/
+/*eslint no-unused-vars: ["error", { "vars": "local" }]*/
 
 const
   _os =
