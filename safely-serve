@@ -2,44 +2,56 @@
 
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-//    ----------------------------------------------------------------------
-//    Copyright © 2024, 2025  Pellegrino Prevete
-//
-//    All rights reserved
-//    ----------------------------------------------------------------------
-//
-//    This program is free software: you can redistribute it and/or modify
-//    it under the terms of the GNU Affero General Public License as published by
-//    the Free Software Foundation, either version 3 of the License, or
-//    (at your option) any later version.
-//
-//    This program is distributed in the hope that it will be useful,
-//    but WITHOUT ANY WARRANTY; without even the implied warranty of
-//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//    GNU Affero General Public License for more details.
-//
-//    You should have received a copy of the GNU Affero General Public License
-//    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+/**    ----------------------------------------------------------------------
+ *     safely-serve
+ *     ----------------------------------------------------------------------
+ *     Copyright ©
+ *       Pellegrino Prevete
+ *         2024, 2025, 2026
+ * 
+ *     All rights reserved
+ *     ----------------------------------------------------------------------
+ * 
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ * 
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ * 
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+/*eslint no-undef: "error"*/
 
 const
   _os =
     require(
       "os");
-_homedir =
-  _os.homedir;
+const
+  _homedir =
+    _os.homedir;
 const
   _libcrash =
     require(
       'crash-js');
+/*global _cmdline_check*/
 const
   _cmdline_check =
     _libcrash._cmdline_check;
+/*global _msg_info*/
 const
   _msg_info =
     _libcrash._msg_info;
+/*global _msg_error*/
 const
   _msg_error =
     _libcrash._msg_error;
+/*global _path_join*/
 const
   _path_join =
     _libcrash._path_join;
@@ -60,64 +72,94 @@ const
 
 function
   _global_variables() {
+  /*global app_name:writable*/
   app_name =
     "safely-serve";
+  /*global target_directory:writable*/
   target_directory =
     "";
+  /*global listen_uris:writable*/
   listen_uris =
     [];
+  /*global target_port:writable*/
   target_port =
     "";
+  /*global index_redirect:writable*/
   index_redirect =
     "";
+  /*global debug_enabled:writable*/
   debug_enabled =
     "";
+  /*global config_file:writable*/
   config_file =
     "";
+  /*global logging_disabled:writable*/
   logging_disabled =
     "";
+  /*global cors_enabled:writable*/
   cors_enabled =
     "";
+  /*global clipboard_disabled:writable*/
   clipboard_disabled =
     "";
+  /*global compression_disabled:writable*/
   compression_disabled =
     "";
+  /*global etag_disabled:writable*/
   etag_disabled =
     "";
+  /*global symlinks_enabled:writable*/
   symlinks_enabled =
     "";
+  /*global ssl_cert:writable*/
   ssl_cert =
     "";
+  /*global ssl_key:writable*/
   ssl_key =
     "";
+  /*global ssl_pass:writable*/
   ssl_pass =
     "";
+  /*global cert_gen:writable*/
   cert_gen =
     "";
+  /*global port_switching_disabled:writable*/
   port_switching_disabled =
     "";
+  /*global keys_length:writable*/
   keys_length =
     "";
+  /*global serial_number:writable*/
   serial_number =
     "";
+  /*global validity_min:writable*/
   validity_min =
     "";
+  /*global validity_max:writable*/
   validity_max =
     "";
+  /*global domain_name:writable*/
   domain_name =
     "";
+  /*global country_name:writable*/
   country_name =
     "";
+  /*global state_name:writable*/
   state_name =
     "";
+  /*global locality_name:writable*/
   locality_name =
     "";
+  /*global organization_name:writable*/
   organization_name =
     "";
+  /*global organization_unit:writable*/
   organization_unit =
     "";
+  /*global cache_dir:writable*/
   cache_dir =
     "";
+  /*global quiet:writable*/
   quiet =
     "";
 }
