@@ -539,13 +539,12 @@ function
 function
   _cmdline_parse_help(
     _argv) {
-  let
-    _help_display;
-  _help_display =
-    _argv[
-      "help"] ||
-    _argv[
-      "h"];
+  const
+    _help_display =
+      _argv[
+        "help"] ||
+      _argv[
+        "h"];
   if ( _help_display ) {
     quiet =
       "n";

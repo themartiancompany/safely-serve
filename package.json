@@ -74,7 +74,7 @@
   },
   "dependencies": {
     "crash-js":
-      "^0.1.67",
+      "^0.1.72",
     "cert-tools":
       "^0.0.7",
     "js-sha256":
