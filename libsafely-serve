@@ -230,38 +230,39 @@ function
     _ssl_pass,
     _port_switching_disabled) {
   let
-    _cmd,
-    _cmd_args,
     _output,
-    _serve_process,
     _uri;
-  _cmd =
-    "npx";
-  _cmd_args =
-    _npx_cmdline_get(
-      _target_directory,
-      _listen_uris,
-      _target_port,
-      _index_redirect,
-      _debug_enabled,
-      _config_file,
-      _logging_disabled,
-      _cors_enabled,
-      _clipboard_disabled,
-      _compression_disabled,
-      _etag_disabled,
-      _symlinks_enabled,
-      _ssl_cert,
-      _ssl_key,
-      _ssl_pass,
-      _port_switching_disabled);
-  _serve_process =
-    _spawn(
-      _cmd,
-      _cmd_args);
-  _serve_data_callback =
-    _serve_data_callback_get(
-      _output);
+  const
+    _cmd =
+      "npx";
+  const
+    _cmd_args =
+      _npx_cmdline_get(
+        _target_directory,
+        _listen_uris,
+        _target_port,
+        _index_redirect,
+        _debug_enabled,
+        _config_file,
+        _logging_disabled,
+        _cors_enabled,
+        _clipboard_disabled,
+        _compression_disabled,
+        _etag_disabled,
+        _symlinks_enabled,
+        _ssl_cert,
+        _ssl_key,
+        _ssl_pass,
+        _port_switching_disabled);
+  const
+    _serve_process =
+      _spawn(
+        _cmd,
+        _cmd_args);
+  const
+    _serve_data_callback =
+      _serve_data_callback_get(
+        _output);
   _serve_process.stdout.on(
     'data',
     _serve_data_callback);
