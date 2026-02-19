@@ -31,22 +31,32 @@ const
   _libcrash =
     require(
       'crash-js');
-_cmdline_check =
-  _libcrash._cmdline_check;
-_msg_info =
-  _libcrash._msg_info;
-_msg_error =
-  _libcrash._msg_error;
-_path_join =
-  _libcrash._path_join;
+const
+  _cmdline_check =
+    _libcrash._cmdline_check;
+const
+  _msg_info =
+    _libcrash._msg_info;
+const
+  _msg_error =
+    _libcrash._msg_error;
+const
+  _path_join =
+    _libcrash._path_join;
+/*global _yargv_get*/
+const
+  _yargv_get =
+    _libcrash._yargv_get;
 const
   _libsafely_serve_module =
     require(
       "./libsafely-serve");
-_path_encode =
-  _libsafely_serve_module._path_encode;
-_safely_serve =
-  _libsafely_serve_module._safely_serve;
+const
+  _path_encode =
+    _libsafely_serve_module._path_encode;
+const
+  _safely_serve =
+    _libsafely_serve_module._safely_serve;
 
 function
   _global_variables() {
