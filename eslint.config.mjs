@@ -35,6 +35,7 @@ export default defineConfig([
  { ignores: [
      "build/**",
      "eslint.config.js"
+     "man/*"
    ],
    rules:
      { semi:

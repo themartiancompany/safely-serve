@@ -266,9 +266,10 @@ function
   _serve_process.stdout.on(
     'data',
     _serve_data_callback);
-  _serve_close_callback =
-    _serve_close_callback_get(
-      _output);
+  const
+    _serve_close_callback =
+      _serve_close_callback_get(
+        _output);
   _serve_process.stdout.on(
     'close',
     _serve_close_callback);
@@ -303,63 +304,62 @@ async function
     _locality_name,
     _organization_name,
     _organization_unit) {
-  let
-    _cert_gen_opts,
-    _mkdir_args,
-    _mkdir_opts,
-    _serve_opts;
   if ( ! _file_exists(
            _ssl_cert) &&
        _cert_new == "y" ) {
-    _mkdir_opts =
-      { "recursive":
-          true,
-        "mode":
-          0700 };
-    _mkdir_args = [
-      _dirname(
-        _ssl_cert),
-      _mkdir_opts
-    ];
+    const
+      _mkdir_opts =
+        { "recursive":
+            true,
+          "mode":
+            0700 };
+    const
+      _mkdir_args = [
+        _dirname(
+          _ssl_cert),
+        _mkdir_opts
+      ];
     _mkdir.apply(
       null,
       _mkdir_args);
-    _cert_gen_opts = [
-      _ssl_key,
-      _keys_length,
-      _serial_number,
-      _validity_min,
-      _validity_max,
-      _domain_name,
-      _country_name,
-      _state_name,
-      _locality_name,
-      _organization_name,
-      _organization_unit,
-      _ssl_cert
-    ];
+    const
+      _cert_gen_opts = [
+        _ssl_key,
+        _keys_length,
+        _serial_number,
+        _validity_min,
+        _validity_max,
+        _domain_name,
+        _country_name,
+        _state_name,
+        _locality_name,
+        _organization_name,
+        _organization_unit,
+        _ssl_cert
+      ];
     await _cert_gen.apply(
       null,
       _cert_gen_opts);
   }
-  _serve_opts = [
-    _target_directory,
-    _listen_uris,
-    _target_port,
-    _index_redirect,
-    _debug_enabled,
-    _config_file,
-    _logging_disabled,
-    _cors_enabled,
-    _clipboard_disabled,
-    _compression_disabled,
-    _etag_disabled,
-    _symlinks_enabled,
-    _ssl_cert,
-    _ssl_key,
-    _ssl_pass,
-    _port_switching_disabled
-  ];
+  const
+    _serve_opts = [
+      _target_directory,
+      _listen_uris,
+      _target_port,
+      _index_redirect,
+      _debug_enabled,
+      _config_file,
+      _logging_disabled,
+      _cors_enabled,
+      _clipboard_disabled,
+      _compression_disabled,
+      _etag_disabled,
+      _symlinks_enabled,
+      _ssl_cert,
+      _ssl_key,
+      _ssl_pass,
+      _port_switching_disabled
+    ];
   _serve.apply(
     null,
     _serve_opts);
