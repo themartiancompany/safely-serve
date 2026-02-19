@@ -21,6 +21,7 @@
 //    You should have received a copy of the GNU Affero General Public License
 //    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+
 const
   { spawn } =
     require(
@@ -102,18 +103,17 @@ function
 function
   _serve_data_callback_get(
     _output) {
-  let
-    _data_callback;
-  _data_callback =
-    function(
-      _data) {
-    _data =
-      _data.toString();
-    console.log(
-      _data);
-    _output +=
-      _data;
-  };
+  const
+    _data_callback =
+      function(
+        _data) {
+      _data =
+        _data.toString();
+      console.log(
+        _data);
+      _output +=
+        _data;
+    };
   return _data_callback;
 }
 
@@ -136,10 +136,11 @@ function
     _ssl_pass,
     _port_switching_disabled) {
   let
-    _cmd_args;
-  _cmd_args = [
-    "serve"
-  ];
+    _uri;
+  const
+    _cmd_args = [
+      "serve"
+    ];
   for ( _uri of _listen_uris ) {
     _cmd_args.push(
       "-l",
@@ -190,16 +191,19 @@ function
       "--no-port-switching");
   }
   if ( _ssl_cert != "" ) {
+    /*global ssl_cert*/
     _cmd_args.push(
       "--ssl-cert",
       ssl_cert);
   }
   if ( _ssl_key != "" ) {
+    /*global ssl_key*/
     _cmd_args.push(
       "--ssl-key",
       ssl_key);
   }
   if ( _ssl_pass != "" ) {
+    /*global ssl_pass*/
     _cmd_args.push(
       "--ssl-pass",
       ssl_pass);
