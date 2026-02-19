@@ -21,6 +21,7 @@
 //    You should have received a copy of the GNU Affero General Public License
 //    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+/*eslint no-unused-vars: ["error", { "vars": "local" }]*/
 
 const
   { spawn } =
@@ -54,10 +55,6 @@ const
 const
   _dirname =
     _libcrash._dirname;
-/*global _error_display*/
-const
-  _error_display =
-    _libcrash._error_display;
 /*global _file_exists*/
 const
   _file_exists =
@@ -230,8 +227,7 @@ function
     _ssl_pass,
     _port_switching_disabled) {
   let
-    _output,
-    _uri;
+    _output;
   const
     _cmd =
       "npx";
@@ -304,6 +300,9 @@ async function
     _locality_name,
     _organization_name,
     _organization_unit) {
+  let
+    _cert_gen_opts_str,
+    _msg;
   if ( ! _file_exists(
            _ssl_cert) &&
        _cert_new == "y" ) {
@@ -312,7 +311,7 @@ async function
         { "recursive":
             true,
           "mode":
-            0700 };
+            "0700" };
     const
       _mkdir_args = [
         _dirname(
@@ -337,6 +336,14 @@ async function
         _organization_unit,
         _ssl_cert
       ];
+    _cert_gen_opts_str =
+      " ".join(
+        _cert_gen_opts);
+    _msg =
+      `Running 'cert-gen' ` +
+      `options '${_cert_gen_opts_str}'.`;
+    _msg_info(
+      _msg);
     await _cert_gen.apply(
       null,
       _cert_gen_opts);

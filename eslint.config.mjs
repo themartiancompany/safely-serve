@@ -32,33 +32,43 @@ const
     "safely-serve";
 
 export default defineConfig([
- { ignores: [
-     "build/**",
-     "eslint.config.js",
-     "man/*"
-   ],
-   rules:
-     { semi:
-         "error",
-       "prefer-const":
-         "error" } },
- { files:
-     [ "**/*js,mjs,cjs}",
-       `**/${_project}*`,
-       `**/lib${_project}` ],
-   plugins:
-     { js },
-   extends:
-     [ "js/recommended" ],
-   languageOptions:
-     { globals:
-         {  ...globals.browser,
-            ...globals.node} } },
- { files:
-     [ "**/*.js",
-       `**/${_project}*`,
-       `**/lib${_project}` ],
-   languageOptions:
-     { sourceType:
-         "commonjs" } },
+  { ignores: [
+      "build/**",
+      "eslint.config.js",
+      "man/**"
+    ],
+    rules:
+      { semi:
+          "error",
+        "prefer-const":
+          "error" },
+    files:
+      [ "**/*js,mjs,cjs}",
+        `**/${_project}*`,
+        `**/lib${_project}` ],
+    plugins:
+      { js },
+    extends:
+      [ "js/recommended" ],
+    languageOptions:
+      { globals:
+          {  ...globals.browser,
+             ...globals.node} } },
+  { ignores: [
+      "build/**",
+      "eslint.config.js",
+      "man/**"
+    ],
+    rules:
+      { semi:
+          "error",
+        "prefer-const":
+          "error" },
+    files:
+      [ "**/*.js",
+        `**/${_project}*`,
+        `**/lib${_project}` ],
+    languageOptions:
+      { sourceType:
+          "commonjs" } },
 ]);
