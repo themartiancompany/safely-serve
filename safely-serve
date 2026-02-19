@@ -33,7 +33,9 @@
      no-unused-vars: [
        "error",
        { "vars":
-           "local" } ] */
+           "local",
+         "varsIgnorePattern":
+           "_input_args_check" } ] */
 
 const
   _os =
@@ -77,6 +79,11 @@ const
   _pwd =
     _libcrash._pwd;
 /* global
+     _argv_url_get */
+const
+  _argv_url_get =
+    _libcrash._argv_url_get;
+/* global
      _yargv_get */
 const
   _yargv_get =
@@ -103,6 +110,11 @@ function
          writable */
   app_name =
     "safely-serve";
+  /* global
+       app_opts:
+         writable */
+  app_opts =
+    [];
   /* global
        runtime_environment:
          writable */
@@ -542,7 +554,7 @@ function
     console.log(
       _line);
   }
-  process.exit(
+  _process_exit(
     _exit_code);
 }
 
@@ -583,8 +595,9 @@ function
     _argv) {
   if ( _argv[
          "_"].length < 1 ) {
-    _msg =
-      "Target directory required.";
+    const
+      _msg =
+        "Target directory required.";
     _msg_error(
       _msg,
       0);
@@ -604,9 +617,16 @@ function
         0];
   if ( typeof _target_directory === 'undefined' ) {
     _target_directory =
-      "";
-    return _target_directory;_target_directory =
-      process.pwd();
+      _pwd();
+    return _target_directory;
+  }
+  else {
+    const
+      _msg =
+        `Target directory value ` +
+        `'${_target_directory}'.`;
+    _msg_info(
+      _msg);
   }
   return _target_directory;
 }
@@ -621,9 +641,10 @@ function
     _value;
   if ( _letter_opt in _argv &&
        _word_opt in _argv ) {
-    _msg =
-      `You can only use ` +
-      `'${_letter_opt}' or '--${_word-opt}'`;
+    const
+      _msg =
+        `You can only use ` +
+        `'${_letter_opt}' or '--${_word_opt}'`;
     _msg_error(
       _msg,
       1);
@@ -651,12 +672,9 @@ function
 
 function 
   _cmdline_parse() {
-  let
-    _argv,
-    _msg,
-    _target_directory;
-  _argv =
-    _yargv_get();
+  const
+    _argv =
+      _yargv_get();
   quiet = 
     "y";
   runtime_environment =
@@ -798,110 +816,109 @@ function
 
 function
   _url_parse() {
-  let
-    _argv;
   runtime_environment =
     "browser";
-  _argv =
-    _argv_url_get();
+  const
+    _argv =
+      _argv_url_get();
   target_directory =
-    _argv_url_get(
-      "target_directory")[
+    _argv[
+      "target_directory"][
         0];
   listen_uris =
-    _argv_url_get(
-      "listen");
+    _argv[
+      "listen"];
   target_port =
-    _argv_url_get(
-      "port")[
+    _argv[
+      "port"][
         0];
   index_redirect =
-    _argv_url_get(
-      "single")[
+    _argv[
+      "single"][
         0];
   config_file =
-    _argv_url_get(
-      "config_file")[
+    _argv[
+      "config_file"][
         0];
   compression_disabled =
-    _argv_url_get(
-      "no_compression")[
+    _argv[
+      "no_compression"][
         0];
   etag_disabled =
-    _argv_url_get(
-      "no_etag")[
+    _argv[
+      "no_etag"][
         0];
   logging_disabled =
-    _argv_url_get(
-      "no_request_logging")[
+    _argv[
+      "no_request_logging"][
         0];
   cors_enabled =
-    _argv_url_get(
-      "cors")[
+    _argv[
+      "cors"][
         0];
   clipboard_disabled =
-    _argv_url_get(
-      "no_clipboard")[
+    _argv[
+      "no_clipboard"][
         0];
   ssl_cert =
-    _argv_url_get(
-      "ssl_cert")[
+    _argv[
+      "ssl_cert"][
         0];
   port_switching_disabled =
-    _argv_url_get(
-      "no_compression")[
+    _argv[
+      "no_compression"][
         0];
   symlinks_enabled =
-    _argv_url_get(
-      "symlinks")[
+    _argv[
+      "symlinks"][
         0];
   ssl_key =
-    _argv_url_get(
-      "ssl_key")[
+    _argv[
+      "ssl_key"][
         0];
   keys_length =
-    _argv_url_get(
-      "keys_length")[
+    _argv[
+      "keys_length"][
         0];
   validity_min =
-    _argv_url_get(
-      "validity_min")[
+    _argv[
+      "validity_min"][
         0];
   validity_max =
-    _argv_url_get(
-      "validity_max")[
+    _argv[
+      "validity_max"][
         0];
   country_name =
-    _argv_url_get(
-      "country_name")[
+    _argv[
+      "country_name"][
         0];
   state_name =
-    _argv_url_get(
-      "state_name")[
+    _argv[
+      "state_name"][
         0];
   locality_name =
-    _argv_url_get(
-      "locality_name")[
+    _argv[
+      "locality_name"][
         0];
   organization_name =
-    _argv_url_get(
-      "organization_name")[
+    _argv[
+      "organization_name"][
         0];
   organization_unit =
-    _argv_url_get(
-      "organization_unit")[
+    _argv[
+      "organization_unit"][
         0];
   serial_number =
-    _argv_url_get(
-      "serial_number")[
+    _argv[
+      "serial_number"][
         0];
   cache_dir =
-    _argv_url_get(
-      "cache_dir")[
+    _argv[
+      "cache_dir"][
         0];
   quiet =
-    _argv_url_get(
-      "quiet");
+    _argv[
+      "quiet"];
   if ( quiet.length === 0 ) {
     quiet =
       "n";
