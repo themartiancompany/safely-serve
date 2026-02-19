@@ -26,8 +26,14 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-/*eslint no-undef: "error"*/
-/*eslint no-unused-vars: ["error", { "vars": "local" }]*/
+/* eslint
+     no-undef:
+       "error" */
+/* eslint
+     no-unused-vars: [
+       "error",
+       { "vars":
+           "local" } ] */
 
 const
   _os =
@@ -40,23 +46,28 @@ const
   _libcrash =
     require(
       'crash-js');
-/*global _cmdline_check*/
+/* global
+     _cmdline_check */
 const
   _cmdline_check =
     _libcrash._cmdline_check;
-/*global _msg_info*/
+/* global
+     _msg_info */
 const
   _msg_info =
     _libcrash._msg_info;
-/*global _msg_error*/
+/* global
+     _msg_error */
 const
   _msg_error =
     _libcrash._msg_error;
-/*global _path_join*/
+/* global
+     _path_join */
 const
   _path_join =
     _libcrash._path_join;
-/*global _yargv_get*/
+/* global
+     _yargv_get */
 const
   _yargv_get =
     _libcrash._yargv_get;
@@ -64,9 +75,13 @@ const
   _libsafely_serve_module =
     require(
       "./libsafely-serve");
+/* global
+     _path_encode */
 const
   _path_encode =
     _libsafely_serve_module._path_encode;
+/* global
+     _safely_serve */
 const
   _safely_serve =
     _libsafely_serve_module._safely_serve;
@@ -174,25 +189,24 @@ function
 function
   _work_dir_get(
     _target_directory) {
-  let
-    _work_dir;
-  _target_directory_encoded =
-    _path_encode(
-      target_directory);
-  _work_dir =
-    _path_join( [
-      cache_dir,
-      _target_directory_encoded ]);
+  const
+    _target_directory_encoded =
+      _path_encode(
+        target_directory);
+  const
+    _work_dir =
+      _path_join( [
+        cache_dir,
+        _target_directory_encoded ]);
   return _work_dir;
 }
 
 function
   _ssl_config_auto_detect() {
-  let
-    _work_dir;
-  _work_dir =
-    _work_dir_get(
-      target_directory);
+  const
+    _work_dir =
+      _work_dir_get(
+        target_directory);
   if ( ssl_cert == "" ) {
     ssl_cert =
       `${_work_dir}/cert.pem`;

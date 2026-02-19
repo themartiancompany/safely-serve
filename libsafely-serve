@@ -21,13 +21,21 @@
 //    You should have received a copy of the GNU Affero General Public License
 //    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-/*eslint no-unused-vars: ["error", { "vars": "local" }]*/
+/* eslint
+     no-unused-vars: [
+       "error",
+       { "vars":
+           "local" } ] */
+/* eslint
+     no-unassigned-vars:
+       "warn" */
 
 const
   { spawn } =
     require(
       "node:child_process");
-/*global _spawn*/
+/* global
+     _spawn */
 const
   _spawn =
     spawn;
@@ -35,7 +43,8 @@ const
   _cert_tools_module =
     require(
       'cert-tools');
-/*global _cert_gen*/
+/* global
+     _cert_gen */
 const
   _cert_gen =
     _cert_tools_module._cert_gen;
@@ -43,7 +52,8 @@ const
   _sha_module =
     require(
       'js-sha256');
-/*global _sha256*/
+/* global
+     _sha256 */
 const
   _sha256 =
     _sha_module.sha256;
@@ -51,26 +61,26 @@ const
   _libcrash =
   require(
     'crash-js');
-/*global _dirname*/
+/* global
+     _dirname */
 const
   _dirname =
     _libcrash._dirname;
-/*global _file_exists*/
+/* global
+     _file_exists */
 const
   _file_exists =
     _libcrash._file_exists;
-/*global _mkdir*/
+/* global
+     _mkdir */
 const
   _mkdir =
     _libcrash._mkdir;
-/*global _msg_info*/
+/* global
+     _msg_info */
 const
   _msg_info =
     _libcrash._msg_info;
-/*global _msg_error*/
-const
-  _msg_error =
-    _libcrash._msg_error;
 
 function
   _path_encode(
@@ -89,10 +99,16 @@ function
     _close_callback =
       function(
         _code) {
+      let
+        _msg;
+      _msg =
+        `Exit code: ${_code}`;
       console.log(
-        `Exit code: ${_code}`);
+        _msg);
+      _msg =
+        `Output: ${_output}`;
       console.log(
-        `Output: ${_output}`);
+        _msg);
     };
   return _close_callback;
 }
@@ -188,24 +204,26 @@ function
       "--no-port-switching");
   }
   if ( _ssl_cert != "" ) {
-    /*global ssl_cert*/
+    /* global
+         ssl_cert */
     _cmd_args.push(
       "--ssl-cert",
       ssl_cert);
   }
   if ( _ssl_key != "" ) {
-    /*global ssl_key*/
+    /* global
+         ssl_key */
     _cmd_args.push(
       "--ssl-key",
       ssl_key);
   }
   if ( _ssl_pass != "" ) {
-    /*global ssl_pass*/
+    /* global
+         ssl_pass */
     _cmd_args.push(
       "--ssl-pass",
       ssl_pass);
   }
-
 }
 
 function
@@ -226,6 +244,7 @@ function
     _ssl_key,
     _ssl_pass,
     _port_switching_disabled) {
+  /* eslint no-unused-vars: [ "error", { "varsIgnorePattern": "_output" } ] */
   let
     _output;
   const
