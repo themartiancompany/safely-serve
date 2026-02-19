@@ -67,6 +67,16 @@ const
   _path_join =
     _libcrash._path_join;
 /* global
+     _process_exit */
+const
+  _process_exit =
+    _libcrash._process_exit;
+/* global
+     _pwd */
+const
+  _pwd =
+    _libcrash._pwd;
+/* global
      _yargv_get */
 const
   _yargv_get =
@@ -300,7 +310,7 @@ function
     _cache_dir_auto_detect();
   if ( target_directory == "" ) {
     target_directory =
-      process.cwd();
+      _pwd();
   }
   if ( target_port == "" ) {
     target_port =
