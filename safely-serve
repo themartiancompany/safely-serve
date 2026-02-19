@@ -88,94 +88,159 @@ const
 
 function
   _global_variables() {
-  /*global app_name:writable*/
+  /* global
+       app_name:
+         writable */
   app_name =
     "safely-serve";
-  /*global target_directory:writable*/
+  /* global
+       runtime_environment:
+         writable */
   target_directory =
     "";
-  /*global listen_uris:writable*/
+  /* global
+       target_directory:
+         writable */
+  target_directory =
+    "";
+  /* global
+       listen_uris:
+         writable */
   listen_uris =
     [];
-  /*global target_port:writable*/
+  /* global
+       target_port:
+         writable */
   target_port =
     "";
-  /*global index_redirect:writable*/
+  /* global
+       index_redirect:
+         writable */
   index_redirect =
     "";
-  /*global debug_enabled:writable*/
+  /* global
+       debug_enabled:
+         writable */
   debug_enabled =
     "";
-  /*global config_file:writable*/
+  /* global
+       config_file:
+         writable */
   config_file =
     "";
-  /*global logging_disabled:writable*/
+  /* global
+       logging_disabled:
+         writable */
   logging_disabled =
     "";
-  /*global cors_enabled:writable*/
+  /* global
+       cors_enabled:
+         writable */
   cors_enabled =
     "";
-  /*global clipboard_disabled:writable*/
+  /* global
+       clipboard_disabled:
+         writable */
   clipboard_disabled =
     "";
-  /*global compression_disabled:writable*/
+  /* global
+       compression_disabled:
+         writable */
   compression_disabled =
     "";
-  /*global etag_disabled:writable*/
+  /* global
+       etag_disabled:
+         writable*/
   etag_disabled =
     "";
-  /*global symlinks_enabled:writable*/
+  /* global
+       symlinks_enabled:
+         writable */
   symlinks_enabled =
     "";
-  /*global ssl_cert:writable*/
+  /* global
+       ssl_cert:
+         writable */
   ssl_cert =
     "";
-  /*global ssl_key:writable*/
+  /* global
+       ssl_key:
+         writable */
   ssl_key =
     "";
-  /*global ssl_pass:writable*/
+  /* global
+       ssl_pass:
+         writable */
   ssl_pass =
     "";
-  /*global cert_gen:writable*/
+  /* global
+       cert_gen:
+         writable */
   cert_gen =
     "";
-  /*global port_switching_disabled:writable*/
+  /* global
+       port_switching_disabled:
+         writable */
   port_switching_disabled =
     "";
-  /*global keys_length:writable*/
+  /* global
+       keys_length:
+         writable */
   keys_length =
     "";
-  /*global serial_number:writable*/
+  /* global
+       serial_number:
+         writable */
   serial_number =
     "";
-  /*global validity_min:writable*/
+  /* global
+       validity_min:
+         writable*/
   validity_min =
     "";
-  /*global validity_max:writable*/
+  /* global
+       validity_max:
+         writable */
   validity_max =
     "";
-  /*global domain_name:writable*/
+  /* global
+       domain_name:
+         writable */
   domain_name =
     "";
-  /*global country_name:writable*/
+  /* global
+       country_name:
+         writable */
   country_name =
     "";
-  /*global state_name:writable*/
+  /* global
+       state_name:
+         writable */
   state_name =
     "";
-  /*global locality_name:writable*/
+  /* global
+       locality_name:
+         writable */
   locality_name =
     "";
-  /*global organization_name:writable*/
+  /* global
+       organization_name:
+         writable */
   organization_name =
     "";
-  /*global organization_unit:writable*/
+  /* global
+       organization_unit:
+         writable */
   organization_unit =
     "";
-  /*global cache_dir:writable*/
+  /* global
+       cache_dir:
+         writable */
   cache_dir =
     "";
-  /*global quiet:writable*/
+  /* global
+       quiet:
+         writable */
   quiet =
     "";
 }
@@ -192,7 +257,7 @@ function
   const
     _target_directory_encoded =
       _path_encode(
-        target_directory);
+        _target_directory);
   const
     _work_dir =
       _path_join( [
@@ -322,41 +387,41 @@ function
 function
   _config_show() {
   let
-    _line,
-    _text;
-  _text = [
-    `${app_name} configuration:`,
-    `      Runtime environment:   ${runtime_environment}`,
-    `         Target directory:   ${target_directory}`,
-    `          Serve options:`,
-    `              Listen URIs:   ${listen_uris}`,
-    `              Target port:   ${target_port}`,
-    `           Index redirect:   ${index_redirect}`,
-    `       Configuration file:   ${config_file}`,
-    `         Quiet stdout log:   ${logging_disabled}`,
-    `                     Cors:   ${cors_enabled}`,
-    `             No clipboard:   ${clipboard_disabled}`,
-    `           No compression:   ${compression_disabled}`,
-    `             Disable ETag:   ${etag_disabled}`,
-    `                 Symlinks:   ${symlinks_enabled}`,
-    `        No port switching:   ${port_switching_disabled}`,
-    `            SSL options:`,
-    `     Generate certificate:   ${cert_gen}`,
-    `          SSL Certificate:   ${ssl_cert}`,
-    `          SSL private key:   ${ssl_key}`,
-    `             Key password:   ${ssl_pass}`,
-    `    Certificate options:`,
-    `               Key length:   ${keys_length}`,
-    `            Serial number:   ${serial_number}`,
-    `              Valid after:   ${validity_min}`,
-    `               Expires on:   ${validity_max}`,
-    `              Domain name:   ${domain_name}`,
-    `                  Country:   ${country_name}`,
-    `                    State:   ${state_name}`,
-    `                 Locality:   ${locality_name}`,
-    `             Organization:   ${organization_name}`,
-    `        Organization unit:   ${organization_unit}`,
-  ];
+    _line;
+  const
+    _text = [
+      `${app_name} configuration:`,
+      `      Runtime environment:   ${runtime_environment}`,
+      `         Target directory:   ${target_directory}`,
+      `          Serve options:`,
+      `              Listen URIs:   ${listen_uris}`,
+      `              Target port:   ${target_port}`,
+      `           Index redirect:   ${index_redirect}`,
+      `       Configuration file:   ${config_file}`,
+      `         Quiet stdout log:   ${logging_disabled}`,
+      `                     Cors:   ${cors_enabled}`,
+      `             No clipboard:   ${clipboard_disabled}`,
+      `           No compression:   ${compression_disabled}`,
+      `             Disable ETag:   ${etag_disabled}`,
+      `                 Symlinks:   ${symlinks_enabled}`,
+      `        No port switching:   ${port_switching_disabled}`,
+      `            SSL options:`,
+      `     Generate certificate:   ${cert_gen}`,
+      `          SSL Certificate:   ${ssl_cert}`,
+      `          SSL private key:   ${ssl_key}`,
+      `             Key password:   ${ssl_pass}`,
+      `    Certificate options:`,
+      `               Key length:   ${keys_length}`,
+      `            Serial number:   ${serial_number}`,
+      `              Valid after:   ${validity_min}`,
+      `               Expires on:   ${validity_max}`,
+      `              Domain name:   ${domain_name}`,
+      `                  Country:   ${country_name}`,
+      `                    State:   ${state_name}`,
+      `                 Locality:   ${locality_name}`,
+      `             Organization:   ${organization_name}`,
+      `        Organization unit:   ${organization_unit}`,
+    ];
   for ( _line of _text ) {
     _msg_info(
       _line);
@@ -367,102 +432,102 @@ function
   _usage(
     _exit_code) {
   let
-    _line,
-    _text;
-  _text = [
-    "",
-    "Serve extension which generates a self-signed SSL certificate at runtime.",
-    "",
-    "Usage:",
-    "",
-    "  safely-serve",
-    "    [options]",
-    "    <target-directory>",
-    "",
-    "  serve options:",
-    "     -l, --listen=URI               Specify a URI endpoint on",
-    "                                    which to listen (see below);",
-    "                                    more than one may be specified to",
-    "                                    listen in multiple places.",
-    `                                    Default: '${listen_uris}'`,
-    "     -p, --port=PORT                Specify custom port",
-    `                                    Default: '${target_port}'`,
-    "     -s, --single                   Rewrite all not-found requests",
-    "                                    to 'index.html'.",
-    `                                    Default: '${index_redirect}'`,
-    "     -d, --debug                    Show debugging information.",
-    `                                    Default: '${debug_enabled}'`,
-    "     -c, --config=PATH              Specify custom path to 'serve.json'.",
-    `                                    Default: '${config_file}'`,
-    "     -L, --no-request-logging       Do not log any request information",
-    "                                    to the console.",
-    `                                    Default: '${logging_disabled}'`,
-    "     -C, --cors                     Enable CORS, sets",
-    "                                    'Access-Control-Allow-Origin'",
-    "                                    to '*'.",
-    `                                    Default: '${cors_enabled}'`,
-    "     -n, --no-clipboard             Do not copy the local address",
-    "                                    to the clipboard.",
-    `                                    Default: '${clipboard_disabled}'`,
-    "     -u, --no-compression           Do not compress files.",
-    `                                    Default: '${compression_disabled}'`,
-    "     -e, --no-etag                  Send 'Last-Modified' header",
-    "                                    instead of `ETag`.",
-    `                                    Default: '${etag_disabled}'`,
-    "     -S, --symlinks                 Resolve symlinks instead of",
-    "                                    showing 404 errors.",
-    `                                    Default: '${symlinks_enabled}'`,
-    "     --no-port-switching            Do not open a port other than",
-    "                                    the one specified when it's taken.",
-    `                                    Default: '${port_switching_disabled}'`,
-    "  ssl options:",
-    "     -g, --gen-cert                 If enabled, generate self-signed certificate",
-    "                                    at the specified path.",
-    `                                    Default: '${cert_gen}'`,
-    "     -I, --ssl-cert=PATH            Optional path to an SSL/TLS",
-    "                                    certificate to serve with HTTPS.",
-    "                                    Supported formats: PEM (default)",
-    "                                    and PKCS12 (PFX)",
-    `                                    Default: '${ssl_cert}'`,
-    "     -i, --ssl-key=PATH             Optional path to the SSL/TLS",
-    "                                    certificate's private key.",
-    "                                    Applicable only for PEM certificates.",
-    `                                    Default: '${ssl_key}'`,
-    "     -k --ssl-pass=PATH             Optional path to the SSL/TLS",
-    "                                    certificate's passphrase.",
-    `                                    Default: '${ssl_pass}'`,
-    "",
-    "  certificate options:",
-    "     -N, --keys-length=N            Generated keys pair length.",
-    `                                    Default: '${keys_length}'`,
-    "     -B, --validity-min=DATE        Set activation date.",
-    `                                    Default: '${validity_min}'`,
-    "     -E, --validity-max=DATE        Set expiration date.",
-    `                                    Default: '${validity_max}'`,
-    "     -D, --domain-name=DOMAIN       Set domain name.",
-    `                                    Default: '${domain_name}'`,
-    "     -C, --country-name=COUNTRY     Set country name.",
-    `                                    Default: '${country_name}'`,
-    "     -S, --state-name=STATE         Set state name.",
-    `                                    Default: '${state_name}'`,
-    "     --locality-name=LOCALITY       Set locality name.",
-    `                                    Default: '${locality_name}'`,
-    "     -O, --organization-name=ORG    Set organization name.",
-    `                                    Default: '${organization_name}'`,
-    "     -U, --organization-unit=UNIT   Set organization unit.",
-    `                                    Default: '${organization_unit}'`,
-    "     -X, --serial-number=SERIAL     Set serial number.",
-    `                                    Default: '${serial_number}'`,
-    "",
-    "  application options:",
-    "     -N, --keys-length=N            Generated keys pair length.",
-    "     -W, --cache-dir                Work directory.",
-    `                                    Default: '${cache_dir}'`,
-    "     -v, --version                  Displays the current version of",
-    "                                    Safely Serve.",
-    "     -h, --help                     Shows this help message.",
-    "",
-  ];
+    _line;
+  const
+    _text = [
+      "",
+      "Serve extension which generates a self-signed SSL certificate at runtime.",
+      "",
+      "Usage:",
+      "",
+      "  safely-serve",
+      "    [options]",
+      "    <target-directory>",
+      "",
+      "  serve options:",
+      "     -l, --listen=URI               Specify a URI endpoint on",
+      "                                    which to listen (see below);",
+      "                                    more than one may be specified to",
+      "                                    listen in multiple places.",
+      `                                    Default: '${listen_uris}'`,
+      "     -p, --port=PORT                Specify custom port",
+      `                                    Default: '${target_port}'`,
+      "     -s, --single                   Rewrite all not-found requests",
+      "                                    to 'index.html'.",
+      `                                    Default: '${index_redirect}'`,
+      "     -d, --debug                    Show debugging information.",
+      `                                    Default: '${debug_enabled}'`,
+      "     -c, --config=PATH              Specify custom path to 'serve.json'.",
+      `                                    Default: '${config_file}'`,
+      "     -L, --no-request-logging       Do not log any request information",
+      "                                    to the console.",
+      `                                    Default: '${logging_disabled}'`,
+      "     -C, --cors                     Enable CORS, sets",
+      "                                    'Access-Control-Allow-Origin'",
+      "                                    to '*'.",
+      `                                    Default: '${cors_enabled}'`,
+      "     -n, --no-clipboard             Do not copy the local address",
+      "                                    to the clipboard.",
+      `                                    Default: '${clipboard_disabled}'`,
+      "     -u, --no-compression           Do not compress files.",
+      `                                    Default: '${compression_disabled}'`,
+      "     -e, --no-etag                  Send 'Last-Modified' header",
+      "                                    instead of `ETag`.",
+      `                                    Default: '${etag_disabled}'`,
+      "     -S, --symlinks                 Resolve symlinks instead of",
+      "                                    showing 404 errors.",
+      `                                    Default: '${symlinks_enabled}'`,
+      "     --no-port-switching            Do not open a port other than",
+      "                                    the one specified when it's taken.",
+      `                                    Default: '${port_switching_disabled}'`,
+      "  ssl options:",
+      "     -g, --gen-cert                 If enabled, generate self-signed certificate",
+      "                                    at the specified path.",
+      `                                    Default: '${cert_gen}'`,
+      "     -I, --ssl-cert=PATH            Optional path to an SSL/TLS",
+      "                                    certificate to serve with HTTPS.",
+      "                                    Supported formats: PEM (default)",
+      "                                    and PKCS12 (PFX)",
+      `                                    Default: '${ssl_cert}'`,
+      "     -i, --ssl-key=PATH             Optional path to the SSL/TLS",
+      "                                    certificate's private key.",
+      "                                    Applicable only for PEM certificates.",
+      `                                    Default: '${ssl_key}'`,
+      "     -k --ssl-pass=PATH             Optional path to the SSL/TLS",
+      "                                    certificate's passphrase.",
+      `                                    Default: '${ssl_pass}'`,
+      "",
+      "  certificate options:",
+      "     -N, --keys-length=N            Generated keys pair length.",
+      `                                    Default: '${keys_length}'`,
+      "     -B, --validity-min=DATE        Set activation date.",
+      `                                    Default: '${validity_min}'`,
+      "     -E, --validity-max=DATE        Set expiration date.",
+      `                                    Default: '${validity_max}'`,
+      "     -D, --domain-name=DOMAIN       Set domain name.",
+      `                                    Default: '${domain_name}'`,
+      "     -C, --country-name=COUNTRY     Set country name.",
+      `                                    Default: '${country_name}'`,
+      "     -S, --state-name=STATE         Set state name.",
+      `                                    Default: '${state_name}'`,
+      "     --locality-name=LOCALITY       Set locality name.",
+      `                                    Default: '${locality_name}'`,
+      "     -O, --organization-name=ORG    Set organization name.",
+      `                                    Default: '${organization_name}'`,
+      "     -U, --organization-unit=UNIT   Set organization unit.",
+      `                                    Default: '${organization_unit}'`,
+      "     -X, --serial-number=SERIAL     Set serial number.",
+      `                                    Default: '${serial_number}'`,
+      "",
+      "  application options:",
+      "     -N, --keys-length=N            Generated keys pair length.",
+      "     -W, --cache-dir                Work directory.",
+      `                                    Default: '${cache_dir}'`,
+      "     -v, --version                  Displays the current version of",
+      "                                    Safely Serve.",
+      "     -h, --help                     Shows this help message.",
+      "",
+    ];
   for ( _line of _text ) {
     console.log(
       _line);

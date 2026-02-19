@@ -28,7 +28,7 @@
            "local" } ] */
 /* eslint
      no-unassigned-vars:
-       "warn" */
+       "off" */
 
 const
   { spawn } =
@@ -124,6 +124,8 @@ function
         _data.toString();
       console.log(
         _data);
+      /* global
+           _output */
       _output +=
         _data;
     };
@@ -244,7 +246,6 @@ function
     _ssl_key,
     _ssl_pass,
     _port_switching_disabled) {
-  /* eslint no-unused-vars: [ "error", { "varsIgnorePattern": "_output" } ] */
   let
     _output;
   const
