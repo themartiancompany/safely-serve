@@ -39,12 +39,13 @@ const
 const
   _output_file_name =
     `${_input_file_name}.js`;
-_output = {
-  path:
-    _output_dir,
-  filename:
-    _output_file_name
-};
+const
+  _output = {
+    path:
+      _output_dir,
+    filename:
+      _output_file_name
+  };
 module.exports = {
   entry:
     _input_file_path,
