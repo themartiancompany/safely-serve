@@ -27,14 +27,6 @@ const
   { resourceRegExp:
       /^node:child_process$/ };
 const
-  _utils_ignore =
-  { resourceRegExp:
-      /^utils$/ };
-const
-  _web_worker_ignore =
-  { resourceRegExp:
-      /^web-worker$/ };
-const
   _serve_ignore =
   { resourceRegExp:
       /^serve$/ };
@@ -61,14 +53,6 @@ const
   _serve_ignore_plugin =
     new _ignore_plugin(
           _serve_ignore);
-const
-  _utils_ignore_plugin =
-    new _ignore_plugin(
-          _utils_ignore);
-const
-  _web_worker_ignore_plugin =
-    new _ignore_plugin(
-          _web_worker_ignore);
 const
   _yargs_ignore_plugin =
     new _ignore_plugin(
