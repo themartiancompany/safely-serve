@@ -85,7 +85,7 @@ module.exports = {
           __dirname,
           'node_modules/path/mod.js'),
     },
-  }
+  },
   plugins: [
     _node_fs_ignore_plugin,
   ]
