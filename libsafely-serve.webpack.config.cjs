@@ -46,7 +46,7 @@ const
 const
   _node_fs_ignore =
   { resourceRegExp:
-      /^node:fs_process$/ };
+      /^node:fs$/ };
 const
   _serve_ignore =
   { resourceRegExp:
