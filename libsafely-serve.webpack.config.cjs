@@ -120,6 +120,8 @@ module.exports = {
     fallback: {
       "node:child_process":
         false,
+      "node:fs":
+        false,
       "serve":
         false,
       "utils":

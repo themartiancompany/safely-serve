@@ -109,6 +109,8 @@ module.exports = {
           'node_modules/yargs-parser/browser.mjs'),
     },
     fallback: {
+      "node:fs":
+        false,
       "node:child_process":
         false,
       "serve":
