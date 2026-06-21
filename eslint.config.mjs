@@ -34,7 +34,9 @@ const
 export default defineConfig([
   { ignores: [
       "build/**",
+      "dist/**",
       "eslint.config.js",
+      "fs-worker.js",
       "man/**"
     ],
     rules:
@@ -43,7 +45,7 @@ export default defineConfig([
         "prefer-const":
           "error" },
     files:
-      [ "**/*js,mjs,cjs}",
+      [ "**/*.{js,mjs,cjs}",
         `**/${_project}*`,
         `**/lib${_project}` ],
     plugins:

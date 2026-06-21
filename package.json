@@ -2,7 +2,7 @@
   "name":
     "safely-serve",
   "version":
-    "0.0.9",
+    "0.0.10",
   "description":
     "Serve extension which auto-generates self-signed OpenSSL certificates' at runtime",
   "funding": {
@@ -17,13 +17,11 @@
     "AUTHORS.rst",
     "COPYING",
     "README.md",
+    "dist",
     "eslint.config.mjs",
     "package.json",
-    "safely-serve.js",
     "safely-serve",
-    "fs-worker.js",
     "fs-worker.webpack.config.cjs",
-    "index.html",
     "libsafely-serve",
     "libsafely-serve.webpack.config.cjs",
     "man",
@@ -74,9 +72,9 @@
   },
   "dependencies": {
     "crash-js":
-      "^0.1.72",
+      "^0.11.1",
     "cert-tools":
-      "^0.0.7",
+      "^0.0.11",
     "js-sha256":
       "^0.11.1",
     "os":
@@ -93,11 +91,11 @@
         "safely-serve" },
   "scripts": {
     "build-fs-worker":
-      "npx webpack --mode 'production' --config 'fs-worker.webpack.config.cjs' --stats-error-details",
+      "npx webpack --mode 'production' --config 'fs-worker.webpack.config.cjs' --stats-error-details; for _component in {'','lib'}'safely-serve'; do cp 'fs-worker.js' \"dist/${_component}\"; done",
     "build-lib":
-      "npx webpack --mode 'production' --config 'libsafely-serve.webpack.config.cjs' --stats-error-details",
+      "npx webpack --mode 'production' --config 'libsafely-serve.webpack.config.cjs' --stats-error-details; mv 'libsafely-serve.js' 'dist/libsafely-serve'",
     "build-bin":
-      "npx webpack --mode 'production' --config 'webpack.config.cjs' --stats-error-details",
+      "npx webpack --mode 'production' --config 'webpack.config.cjs' --stats-error-details; mv 'safely-serve.js' 'dist/safely-serve'",
     "build":
       "npm run lint && npm run build-fs-worker && npm run build-lib && npm run build-bin",
     "lint":
@@ -105,7 +103,7 @@
     "publish-pnm":
       "npm run build && npm publish --access public",
     "start":
-      "npx safely-serve -d .",
+      "npx safely-serve -d dist/safely-serve",
     "test":
       "echo \"Error: no test specified\" && exit 1"
   }
