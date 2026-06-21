@@ -81,7 +81,7 @@ module.exports = {
       "opfs":
         _path.resolve(
           __dirname,
-          'node_modules/fs/fs'),
+          'node_modules/opfs/opfs'),
       "path":
         _path.resolve(
           __dirname,

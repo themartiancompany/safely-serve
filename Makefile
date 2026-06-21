@@ -49,6 +49,7 @@ NPM_FILES=\
   "README.md" \
   "COPYING" \
   "AUTHORS.rst" \
+  "dist" \
   "eslint.config.mjs" \
   "fs-worker.webpack.config.cjs" \
   "lib$(_PROJECT)" \
