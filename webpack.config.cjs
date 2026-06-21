@@ -27,6 +27,10 @@ const
   { resourceRegExp:
       /^node:child_process$/ };
 const
+  _node_fs_ignore =
+  { resourceRegExp:
+      /^node:fs$/ };
+const
   _serve_ignore =
   { resourceRegExp:
       /^serve$/ };
@@ -49,6 +53,10 @@ const
   _child_process_ignore_plugin =
     new _ignore_plugin(
           _child_process_ignore);
+const
+  _node_fs_ignore_plugin =
+    new _ignore_plugin(
+          _node_fs_ignore);
 const
   _serve_ignore_plugin =
     new _ignore_plugin(
@@ -123,6 +131,7 @@ module.exports = {
       "yargs":
         'yargs' },
   plugins: [
+    _node_fs_ignore_plugin,
     _child_process_ignore_plugin,
     _serve_ignore_plugin,
     _yargs_ignore_plugin,
