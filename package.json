@@ -2,7 +2,7 @@
   "name":
     "safely-serve",
   "version":
-    "0.0.10",
+    "0.0.11",
   "description":
     "Serve extension which auto-generates self-signed OpenSSL certificates' at runtime",
   "funding": {
