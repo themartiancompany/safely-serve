@@ -45,9 +45,13 @@ const
   _homedir =
     _os.homedir;
 const
+  _libcrash_module =
+    await import(
+      "crash-js");
+const
   _libcrash =
-    require(
-      'crash-js');
+    _libcrash_module.default;
+
 /* global
      _cmdline_check */
 const
@@ -64,15 +68,20 @@ const
   _msg_error =
     _libcrash._msg_error;
 /* global
+     _override_set */
+const
+  _override_set =
+    _libcrash._override_set;
+/* global
      _path_join */
 const
   _path_join =
     _libcrash._path_join;
 /* global
-     _process_exit */
+     _exit */
 const
-  _process_exit =
-    _libcrash._process_exit;
+  _exit =
+    _libcrash._exit;
 /* global
      _pwd */
 const
@@ -316,94 +325,106 @@ function
   }
 }
 
+function
+  _validity_auto_detect() { 
+  const
+    _validity_min =
+    new Date());
+  let
+    _validity_max =
+      validity_min;
+  _validity_max.setFullYear(
+    validity_min.getFullYear() +
+      1);
+  _override_set(
+    "validity",
+    "min",
+    _validity_min);
+  _override_set(
+    "validity",
+    "max",
+    _validity_max);
+}
+
+
 function 
   _overrides_set() {
   cache_dir =
     _cache_dir_auto_detect();
-  if ( target_directory == "" ) {
-    target_directory =
-      _pwd();
-  }
-  if ( target_port == "" ) {
-    target_port =
-      "3000";
-  }
-  if ( index_redirect == "" ) {
-    index_redirect =
-      "y";
-  }
-  if ( logging_disabled == "" ) {
-    logging_disabled =
-      "n";
-  }
-  if ( cors_enabled == "" ) {
-    cors_enabled =
-      "n";
-  }
-  if ( clipboard_disabled == "" ) {
-    clipboard_disabled =
-      "n";
-  }
-  if ( compression_disabled == "" ) {
-    compression_disabled =
-      "n";
-  }
-  if ( etag_disabled == "" ) {
-    etag_disabled =
-      "n";
-  }
-  if ( symlinks_enabled == "" ) {
-    symlinks_enabled =
-      "n";
-  }
+  _override_set(
+    "target",
+    "directory",
+    _pwd());
+  _override_set(
+    "target",
+    "port",
+    "3000");
+  _override_set(
+    "index",
+    "redirect",
+    "y");
+  _override_set(
+    "logging",
+    "disabled",
+    "n");
+  _override_set(
+    "cors",
+    "enabled",
+    "n");
+  _override_set(
+    "clipboard",
+    "disabled",
+    "n");
+  _override_set(
+    "compression",
+    "disabled",
+    "n");
+  _override_set(
+    "etag",
+    "disabled",
+    "n");
+  _override_set(
+    "symlink",
+    "enabled",
+    "n");
   _ssl_config_auto_detect();
-  if ( port_switching_disabled == "" ) {
-    port_switching_disabled =
-      "n";
-  }
-  if ( keys_length == "" ) {
-    keys_length =
-      "4096";
-  }
-  if ( validity_min == "" ) {
-    validity_min =
-      new Date();
-  }
-  if ( validity_max == "" ) {
-    validity_max =
-      new Date();
-    validity_max.setFullYear(
-      validity_min.getFullYear() +
-      1);
-  }
-  if ( serial_number == "" ) {
-    serial_number =
-      "01";
-  }
-  if ( domain_name == "" ) {
-    domain_name =
-      "localhost";
-  }
-  if ( country_name == "" ) {
-    country_name =
-      "LP";
-  }
-  if ( state_name == "" ) {
-    state_name =
-      "Nananapoli";
-  }
-  if ( locality_name == "" ) {
-    locality_name =
-      "Pollena Trocchia";
-  }
-  if ( organization_name == "" ) {
-    organization_name =
-      "The Martian Company";
-  }
-  if ( organization_unit == "" ) {
-    organization_unit =
-      "Index Development Team";
-  }
+  _override_set(
+    "port_switching",
+    "disabled",
+    "n");
+  _override_set(
+    "keys",
+    "length",
+    "4096");
+  _validity_auto_detect();
+  _override_set(
+    "serial",
+    "number",
+    "01");
+  _override_set(
+    "domain",
+    "name",
+    "localhost");
+  _override_set(
+    "country",
+    "name",
+    "LP");
+  _override_set(
+    "state",
+    "name",
+    "Nananapoli");
+  _override_set(
+    "locality",
+    "name",
+    "Pollena Trocchia");
+  _override_set(
+    "organization",
+    "name",
+    "The Martian Company");
+  _override_set(
+    "organization",
+    "name",
+    "Index Development Team");
 }
 
 function
@@ -554,7 +575,7 @@ function
     console.log(
       _line);
   }
-  _process_exit(
+  __exit(
     _exit_code);
 }
 

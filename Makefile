@@ -21,13 +21,14 @@
 
 PREFIX ?= /usr/local
 _PROJECT=safely-serve
+_PROJECT_NPM=$(_PROJECT)
 _NAMESPACE=themartiancompany
 DOC_DIR=$(DESTDIR)$(PREFIX)/share/doc/$(_PROJECT)
 USR_DIR=$(DESTDIR)$(PREFIX)
 BIN_DIR=$(DESTDIR)$(PREFIX)/bin
 LIB_DIR=$(DESTDIR)$(PREFIX)/lib/$(_PROJECT)
 MAN_DIR?=$(DESTDIR)$(PREFIX)/share/man
-NODE_DIR=$(PREFIX)/lib/node_modules/$(_PROJECT)
+NODE_DIR=$(DESTDIR)$(PREFIX)/lib/node_modules/$(_PROJECT)
 BUILD_NPM_DIR=build
 
 _INSTALL_FILE=\
@@ -75,16 +76,63 @@ install: install-scripts install-doc install-examples install-man
 
 install-scripts:
 
-	$(_INSTALL_EXE) \
-	  "$(_PROJECT)" \
-	  "$(LIB_DIR)/$(_PROJECT)"
-	$(_INSTALL_EXE) \
-	  "lib$(_PROJECT)" \
-	  "$(LIB_DIR)/lib$(_PROJECT)"
-	ln \
-	  -s \
-	  "$(PREFIX)/lib/$(_PROJECT)/$(_PROJECT)" \
-	  "$(BIN_DIR)/$(_PROJECT)"
+	if [[ "$(_NPM)" == "false" ]]; then \
+	  if [[ ! -s "$(BIN_DIR)/$(_PROJECT)" ]]; then \
+	    chmod \
+	      755 \
+	      "$(LIB_DIR)/nodejs/$(_PROJECT)"; \
+	    ln \
+	      -s \
+	      "$(LIB_DIR)/nodejs/$(_PROJECT)" \
+	      "$(BIN_DIR)/$(_PROJECT)"; \
+	  fi; \
+	  $(_INSTALL_DIR) \
+	    "$(LIB_DIR)/nodejs"; \
+	  rm \
+	    "$(LIB_DIR)/node_modules" || \
+	    true; \
+	  if [[ ! -s "$(LIB_DIR)/node_modules" ]]; then \
+	    ln \
+	      -s \
+	      "$(PREFIX)/lib/node_modules" \
+	      "$(LIB_DIR)/nodejs/node_modules"; \
+	  fi; \
+	  rm \
+	    -rf \
+	    "$(DESTDIR)$(PREFIX)/lib/node_modules/$(_PROJECT)" \
+	    "$(DESTDIR)$(PREFIX)/lib/node_modules/$(_PROJECT_NPM)"; \
+	  if [[ ! -s "$(DESTDIR)$(PREFIX)/lib/node_modules/$(_PROJECT_NPM)" ]]; then \
+	    ln \
+	      -s \
+	      "$(PREFIX)/lib/$(_PROJECT)/nodejs" \
+	      "$(DESTDIR)$(PREFIX)/lib/node_modules/$(_PROJECT_NPM)"; \
+	  fi; \
+	  ln \
+	    -s \
+	    "$(PREFIX)/lib/$(_PROJECT)/nodejs" \
+	    "$(DESTDIR)$(PREFIX)/lib/node_modules/$(_PROJECT)" || \
+	    true; \
+	  cp \
+	    -r \
+	    $$(printf \
+	         "$${PWD}/%s " \
+	         $$(cat \
+	              "$${PWD}/package.json" | \
+	              jq \
+	                --raw-output \
+	                '.files[]')) \
+	    "$(LIB_DIR)/nodejs"; \
+	elif [[ "$(_NPM)" == "true" ]]; then \
+	  make \
+	    install-npm; \
+	  ln \
+	   -s \
+	    "$(PREFIX)/lib/node_modules/$(_PROJECT_NPM)" \
+	    "$(LIB_DIR)/nodejs" || \
+	  true; \
+	fi
+
+
 
 build-man:
 
@@ -141,7 +189,7 @@ install-npm:
 	  "$(DESTDIR)$(PREFIX)/lib"; \
 	ln \
 	  -s \
-	  "$(NODE_DIR)" \
+          "$(PREFIX)/lib/node_modules/$(_PROJECT)" \
 	  "$(LIB_DIR)" || \
 	true
 
@@ -169,4 +217,12 @@ install-man:
 	  "man/$(_PROJECT).1.rst" \
 	  "$(MAN_DIR)/man1/$(_PROJECT).1"
 
-.PHONY: check build-man build-npm install install-doc install-man install-npm install-scripts shellcheck
+uninstall-scripts:
+
+	rm \
+	  -rf \
+	  "$(LIB_DIR)" \
+	  "$(BIN_DIR)/$(_PROJECT)" \
+	  "$(NODE_DIR)"
+
+.PHONY: check build-man build-npm install install-doc install-man install-npm install-scripts shellcheck uninstall-scripts
