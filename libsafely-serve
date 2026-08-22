@@ -38,36 +38,9 @@
        "off" */
 
 const
-  { spawn } =
-    require(
-      "node:child_process");
-/* global
-     _spawn */
-const
-  _spawn =
-    spawn;
-const
-  _cert_tools_module =
-    require(
-      'cert-tools');
-/* global
-     _cert_gen */
-const
-  _cert_gen =
-    _cert_tools_module._cert_gen;
-const
-  _sha_module =
-    require(
-      'js-sha256');
-/* global
-     _sha256 */
-const
-  _sha256 =
-    _sha_module.sha256;
-const
   _libcrash =
-  require(
-    'crash-js');
+  await import(
+    "libcrash-js");
 /* global
      _dirname */
 const
@@ -88,6 +61,38 @@ const
 const
   _msg_info =
     _libcrash._msg_info;
+/* global
+     _require */
+const
+  _require =
+    _libcrash._require;
+const
+  { spawn } =
+    await _require(
+      "node:child_process");
+/* global
+     _spawn */
+const
+  _spawn =
+    spawn;
+const
+  _cert_tools_module =
+    await _require(
+      'cert-tools');
+/* global
+     _cert_gen */
+const
+  _cert_gen =
+    _cert_tools_module._cert_gen;
+const
+  _sha_module =
+    await _require(
+      'js-sha256');
+/* global
+     _sha256 */
+const
+  _sha256 =
+    _sha_module.sha256;
 
 function
   _path_encode(
@@ -399,11 +404,17 @@ async function
     _serve_opts);
 }
 
-module.exports = {
-  _path_encode:
-    _path_encode,
-  _safely_serve:
-    _safely_serve,
-  _serve:
-    _serve
+export {
+  _path_encode,
+  _safely_serve,
+  _serve
 };
+
+// module.exports = {
+//   _path_encode:
+//     _path_encode,
+//   _safely_serve:
+//     _safely_serve,
+//   _serve:
+//     _serve
+// };

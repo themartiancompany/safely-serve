@@ -38,25 +38,32 @@
            "_input_args_check" } ] */
 
 const
-  _os =
-    require(
-      "os");
-const
-  _homedir =
-    _os.homedir;
-const
   _libcrash_module =
     await import(
-      "crash-js");
+      "libcrash-js");
 const
   _libcrash =
     _libcrash_module.default;
-
 /* global
      _cmdline_check */
 const
   _cmdline_check =
     _libcrash._cmdline_check;
+/* global
+     _echo */
+const
+  _echo =
+    _libcrash._echo;
+/* global
+     _exit */
+const
+  _exit =
+    _libcrash._exit;
+/* global
+     _homedir_get */
+const
+  _homedir_get =
+    _libcrash._homedir_get;
 /* global
      _msg_info */
 const
@@ -78,15 +85,15 @@ const
   _path_join =
     _libcrash._path_join;
 /* global
-     _exit */
-const
-  _exit =
-    _libcrash._exit;
-/* global
      _pwd */
 const
   _pwd =
     _libcrash._pwd;
+/* global
+     _require */
+const
+  _require =
+    _libcrash._require;
 /* global
      _argv_url_get */
 const
@@ -97,9 +104,10 @@ const
 const
   _yargv_get =
     _libcrash._yargv_get;
+
 const
   _libsafely_serve_module =
-    require(
+    await _require(
       "./libsafely-serve");
 /* global
      _path_encode */
@@ -277,10 +285,23 @@ function
 }
 
 function
-  _cache_dir_auto_detect() {
-  return _homedir() +
-         `/.cache/${app_name}`;
+  _cache_dir_get() {
+  const
+    _home =
+      _homedir_get();
+  const
+    _cache_dir =
+      _path_join( [
+        _home,
+        ".cache",
+        app_name
+      ]);
+  return _cache_dir;
 }
+
+const
+  _cache_dir_auto_detect =
+    _cache_dir_get;
 
 function
   _work_dir_get(
@@ -329,12 +350,12 @@ function
   _validity_auto_detect() { 
   const
     _validity_min =
-    new Date());
-  let
+    new Date();
+  const
     _validity_max =
       validity_min;
   _validity_max.setFullYear(
-    validity_min.getFullYear() +
+    _validity_min.getFullYear() +
       1);
   _override_set(
     "validity",
@@ -572,10 +593,10 @@ function
       "",
     ];
   for ( _line of _text ) {
-    console.log(
+    _echo(
       _line);
   }
-  __exit(
+  _exit(
     _exit_code);
 }
 

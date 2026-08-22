@@ -19,6 +19,7 @@
 #    You should have received a copy of the GNU Affero General Public License
 #    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+_NPM ?= false
 PREFIX ?= /usr/local
 _PROJECT=safely-serve
 _PROJECT_NPM=$(_PROJECT)
@@ -31,6 +32,12 @@ MAN_DIR?=$(DESTDIR)$(PREFIX)/share/man
 NODE_DIR=$(DESTDIR)$(PREFIX)/lib/node_modules/$(_PROJECT)
 BUILD_NPM_DIR=build
 
+_MAKE_LINK=\
+  ln \
+    -s
+_MAKE_EXE=\
+  chmod \
+    755
 _INSTALL_FILE=\
   install \
     -vDm644
@@ -59,80 +66,25 @@ NPM_FILES=\
   "$(_PROJECT)" \
   "webpack.config.cjs"
 
-all: build-man build-npm
+all: build
 
-check: eslint
-
-eslint:
-
-	npm \
-	  install \
-	  --save-dev; \
-	npx \
-	  eslint \
-	    "."
-
-install: install-scripts install-doc install-examples install-man
-
-install-scripts:
+build:
 
 	if [[ "$(_NPM)" == "false" ]]; then \
-	  if [[ ! -s "$(BIN_DIR)/$(_PROJECT)" ]]; then \
-	    chmod \
-	      755 \
-	      "$(LIB_DIR)/nodejs/$(_PROJECT)"; \
-	    ln \
-	      -s \
-	      "$(LIB_DIR)/nodejs/$(_PROJECT)" \
-	      "$(BIN_DIR)/$(_PROJECT)"; \
-	  fi; \
-	  $(_INSTALL_DIR) \
-	    "$(LIB_DIR)/nodejs"; \
-	  rm \
-	    "$(LIB_DIR)/node_modules" || \
-	    true; \
-	  if [[ ! -s "$(LIB_DIR)/node_modules" ]]; then \
-	    ln \
-	      -s \
-	      "$(PREFIX)/lib/node_modules" \
-	      "$(LIB_DIR)/nodejs/node_modules"; \
-	  fi; \
-	  rm \
-	    -rf \
-	    "$(DESTDIR)$(PREFIX)/lib/node_modules/$(_PROJECT)" \
-	    "$(DESTDIR)$(PREFIX)/lib/node_modules/$(_PROJECT_NPM)"; \
-	  if [[ ! -s "$(DESTDIR)$(PREFIX)/lib/node_modules/$(_PROJECT_NPM)" ]]; then \
-	    ln \
-	      -s \
-	      "$(PREFIX)/lib/$(_PROJECT)/nodejs" \
-	      "$(DESTDIR)$(PREFIX)/lib/node_modules/$(_PROJECT_NPM)"; \
-	  fi; \
-	  ln \
-	    -s \
-	    "$(PREFIX)/lib/$(_PROJECT)/nodejs" \
-	    "$(DESTDIR)$(PREFIX)/lib/node_modules/$(_PROJECT)" || \
-	    true; \
-	  cp \
-	    -r \
-	    $$(printf \
-	         "$${PWD}/%s " \
-	         $$(cat \
-	              "$${PWD}/package.json" | \
-	              jq \
-	                --raw-output \
-	                '.files[]')) \
-	    "$(LIB_DIR)/nodejs"; \
+	  make \
+	    build-webpack; \
 	elif [[ "$(_NPM)" == "true" ]]; then \
 	  make \
-	    install-npm; \
-	  ln \
-	   -s \
-	    "$(PREFIX)/lib/node_modules/$(_PROJECT_NPM)" \
-	    "$(LIB_DIR)/nodejs" || \
-	  true; \
+	    build-npm; \
+	else \
+	  echo \
+	   "Invalid value for '$(_NPM)'." \
+	   1>&2; \
+	   exit \
+	     1; \
 	fi
-
-
+	make \
+	  build-man
 
 build-man:
 
@@ -168,6 +120,130 @@ build-npm:
 	mv \
 	  "$(_PROJECT)-$${_version}.tgz" \
 	  ".."
+
+build-webpack:
+
+	cp \
+	  -r \
+	  "$(_PROJECT)" \
+	  "dist" \
+	  "lib$(_PROJECT)" \
+	  "webpack.config.cjs" \
+	  "build"
+	_webpack=( \
+	  "$$(command \
+	        -v \
+	        "webpack")"; \
+	if [[ "${_webpack}" == "" ]]; then \
+	  _webpack=(
+	    npx
+	      webpack); \
+	fi; \
+	cd \
+	  "build"; \
+	if [[ ! -e "fs-worker.js" ]]; then \
+          "${_webpack[@]}" \
+	    --mode \
+	      'production' \
+	    --config \
+	    'fs-worker.webpack.config.cjs' \
+	    --stats-error-details; \
+	fi; \
+	cp \
+	  'fs-worker.js' \
+	  'dist/$(_PROJECT)/fs-worker.js'; \
+	cp \
+	  'fs-worker.js' \
+	  'dist/lib$(_PROJECT)/fs-worker.js'; \
+	if [[ ! -e "$(_PROJECT).js" ]]; then \
+          "${_webpack[@]}" \
+	    --mode \
+	      'production' \
+	    --config \
+	      'webpack.config.cjs' \
+	    --stats-error-details; \
+	fi; \
+	cp \
+	  "$(_PROJECT).js" \
+	  "dist/$(_PROJECT)/$(_PROJECT).js"
+	if [[ ! -e "lib$(_PROJECT).js" ]]; then \
+          "${_webpack[@]}" \
+	    --mode \
+	      'production' \
+	    --config \
+	      'webpack.config.cjs' \
+	    --stats-error-details; \
+	fi; \
+	cp \
+	  "lib$(_PROJECT).js" \
+	  "dist/lib$(_PROJECT)/lib$(_PROJECT).js"
+
+check: eslint
+
+eslint:
+
+	npm \
+	  install \
+	  --save-dev; \
+	npx \
+	  eslint \
+	    "."
+
+install: install-scripts install-doc install-examples install-man
+
+install-scripts:
+
+	if [[ "$(_NPM)" == "false" ]]; then \
+	  if [[ ! -s "$(BIN_DIR)/$(_PROJECT)" ]]; then \
+	    $(_MAKE_EXE) \
+	      "$(LIB_DIR)/nodejs/$(_PROJECT)"; \
+	    $(_MAKE_LINK) \
+	      "$(PREFIX)/lib/$(_PROJECT)/nodejs/$(_PROJECT)" \
+	      "$(BIN_DIR)/$(_PROJECT)"; \
+	  fi; \
+	  $(_INSTALL_DIR) \
+	    "$(LIB_DIR)/nodejs"; \
+	  rm \
+	    "$(LIB_DIR)/node_modules" || \
+	    true; \
+	  if [[ ! -s "$(LIB_DIR)/node_modules" ]]; then \
+	    $(_MAKE_LINK) \
+	      "$(PREFIX)/lib/node_modules" \
+	      "$(LIB_DIR)/nodejs/node_modules"; \
+	  fi; \
+	  rm \
+	    -rf \
+	    "$(DESTDIR)$(PREFIX)/lib/node_modules/$(_PROJECT)" \
+	    "$(DESTDIR)$(PREFIX)/lib/node_modules/$(_PROJECT_NPM)"; \
+	  if [[ ! -s "$(DESTDIR)$(PREFIX)/lib/node_modules/$(_PROJECT_NPM)" ]]; then \
+	    $(_MAKE_LINK) \
+	      "$(PREFIX)/lib/$(_PROJECT)/nodejs" \
+	      "$(DESTDIR)$(PREFIX)/lib/node_modules/$(_PROJECT_NPM)"; \
+	  fi; \
+	  $(_MAKE_LINK) \
+	    "$(PREFIX)/lib/$(_PROJECT)/nodejs" \
+	    "$(DESTDIR)$(PREFIX)/lib/node_modules/$(_PROJECT)" || \
+	    true; \
+	  cp \
+	    -r \
+	    $$(printf \
+	         "$${PWD}/%s " \
+	         $$(cat \
+	              "$${PWD}/package.json" | \
+	              jq \
+	                --raw-output \
+	                '.files[]')) \
+	    "$(LIB_DIR)/nodejs"; \
+	  $(_MAKE_EXE) \
+	    "$(LIB_DIR)/nodejs/$(_PROJECT)"; \
+	elif [[ "$(_NPM)" == "true" ]]; then \
+	  make \
+	    install-npm; \
+	  $(_MAKE_LINK) \
+	    "$(PREFIX)/lib/node_modules/$(_PROJECT_NPM)" \
+	    "$(LIB_DIR)/nodejs" || \
+	  true; \
+	fi
 
 install-npm:
 
@@ -225,4 +301,4 @@ uninstall-scripts:
 	  "$(BIN_DIR)/$(_PROJECT)" \
 	  "$(NODE_DIR)"
 
-.PHONY: check build-man build-npm install install-doc install-man install-npm install-scripts shellcheck uninstall-scripts
+.PHONY: check build build-man build-npm build-webpack install install-doc install-man install-npm install-scripts shellcheck uninstall-scripts
