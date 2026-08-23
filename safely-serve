@@ -38,12 +38,14 @@
            "_input_args_check" } ] */
 
 const
-  _libcrash_module =
+  _libcrash =
     await import(
       "libcrash-js");
+/* global
+     _argv_url_get */
 const
-  _libcrash =
-    _libcrash_module.default;
+  _argv_url_get =
+    _libcrash._argv_url_get;
 /* global
      _cmdline_check */
 const
@@ -59,6 +61,11 @@ const
 const
   _exit =
     _libcrash._exit;
+/* global
+     _global_get */
+const
+  _global_get =
+    _libcrash._global_get;
 /* global
      _homedir_get */
 const
@@ -95,10 +102,10 @@ const
   _require =
     _libcrash._require;
 /* global
-     _argv_url_get */
+     _set */
 const
-  _argv_url_get =
-    _libcrash._argv_url_get;
+  _set =
+    _libcrash._set;
 /* global
      _yargv_get */
 const
@@ -107,7 +114,7 @@ const
 
 const
   _libsafely_serve_module =
-    await _require(
+    await import(
       "./libsafely-serve");
 /* global
      _path_encode */
@@ -125,162 +132,228 @@ function
   /* global
        app_name:
          writable */
-  app_name =
-    "safely-serve";
+  _set(
+    "app",
+    "name",
+    "safely-serve");
   /* global
        app_opts:
          writable */
-  app_opts =
-    [];
+  _set(
+    "app",
+    "opts",
+    []);
   /* global
        runtime_environment:
          writable */
-  target_directory =
-    "";
+  _set(
+    "runtime",
+    "environment",
+    "");
   /* global
        target_directory:
          writable */
-  target_directory =
-    "";
+  _set(
+    "target",
+    "directory",
+    "");
   /* global
        listen_uris:
          writable */
-  listen_uris =
-    [];
+  _set(
+    "listen",
+    "uris",
+    []);
   /* global
        target_port:
          writable */
-  target_port =
-    "";
+  _set(
+    "target",
+    "port",
+    "");
   /* global
        index_redirect:
          writable */
-  index_redirect =
-    "";
+  _set(
+    "index",
+    "redirect",
+    "");
   /* global
        debug_enabled:
          writable */
-  debug_enabled =
-    "";
+  _set(
+    "debug",
+    "enabled",
+    "");
   /* global
        config_file:
          writable */
-  config_file =
-    "";
+  _set(
+    "config",
+    "file",
+    "");
   /* global
        logging_disabled:
          writable */
-  logging_disabled =
-    "";
+  _set(
+    "logging",
+    "disabled",
+    "");
   /* global
        cors_enabled:
          writable */
-  cors_enabled =
-    "";
+  _set(
+    "cors",
+    "enabled",
+    "");
   /* global
        clipboard_disabled:
          writable */
-  clipboard_disabled =
-    "";
+  _set(
+    "clipboard",
+    "disabled",
+    "");
   /* global
        compression_disabled:
          writable */
-  compression_disabled =
-    "";
+  _set(
+    "compression",
+    "disabled",
+    "");
   /* global
        etag_disabled:
          writable*/
-  etag_disabled =
-    "";
+  _set(
+    "etag",
+    "disabled",
+    "");
   /* global
        symlinks_enabled:
          writable */
-  symlinks_enabled =
-    "";
+  _set(
+    "symlinks",
+    "enabled",
+    "");
   /* global
        ssl_cert:
          writable */
-  ssl_cert =
-    "";
+  _set(
+    "ssl",
+    "cert",
+    "");
   /* global
        ssl_key:
          writable */
-  ssl_key =
-    "";
+  _set(
+    "ssl",
+    "key",
+    "");
   /* global
        ssl_pass:
          writable */
-  ssl_pass =
-    "";
+  _set(
+    "ssl",
+    "pass",
+    "");
   /* global
        cert_gen:
          writable */
-  cert_gen =
-    "";
+  _set(
+    "cert",
+    "gen",
+    "");
   /* global
        port_switching_disabled:
          writable */
-  port_switching_disabled =
-    "";
+  _set(
+    "port_switching",
+    "disabled",
+    "");
   /* global
        keys_length:
          writable */
-  keys_length =
-    "";
+  _set(
+    "keys",
+    "length",
+    "");
   /* global
        serial_number:
          writable */
-  serial_number =
-    "";
+  _set(
+    "serial",
+    "number",
+    "");
   /* global
        validity_min:
          writable*/
-  validity_min =
-    "";
+  _set(
+    "validity",
+    "min",
+    "");
   /* global
        validity_max:
          writable */
-  validity_max =
-    "";
+  _set(
+    "validity",
+    "max",
+    "");
   /* global
        domain_name:
          writable */
-  domain_name =
-    "";
+  _set(
+    "domain",
+    "name",
+    "");
   /* global
        country_name:
          writable */
-  country_name =
-    "";
+  _set(
+    "country",
+    "name",
+    "");
   /* global
        state_name:
          writable */
-  state_name =
-    "";
+  _set(
+    "state",
+    "name",
+    "");
   /* global
        locality_name:
          writable */
-  locality_name =
-    "";
+  _set(
+    "locality",
+    "name",
+    "");
   /* global
        organization_name:
          writable */
-  organization_name =
-    "";
+  _set(
+    "organization",
+    "name",
+    "");
   /* global
        organization_unit:
          writable */
-  organization_unit =
-    "";
+  _set(
+    "organization",
+    "unit",
+    "");
   /* global
        cache_dir:
          writable */
-  cache_dir =
-    "";
+  _set(
+    "cache",
+    "dir",
+    "");
   /* global
        quiet:
          writable */
-  quiet =
+  const
+    _global =
+      _global_get();
+  _global[
+    "quiet"] =
     "";
 }
 
@@ -350,10 +423,10 @@ function
   _validity_auto_detect() { 
   const
     _validity_min =
-    new Date();
+      new Date();
   const
     _validity_max =
-      validity_min;
+      _validity_min;
   _validity_max.setFullYear(
     _validity_min.getFullYear() +
       1);
@@ -712,11 +785,11 @@ function
   return _value;
 }
 
-function 
+async function 
   _cmdline_parse() {
   const
     _argv =
-      _yargv_get();
+      await _yargv_get();
   quiet = 
     "y";
   runtime_environment =
@@ -968,14 +1041,14 @@ function
 }
 
 _global_variables();
-if ( _cmdline_check(
+if ( await _cmdline_check(
        app_name) == true ) {
-  _cmdline_parse();
+  await _cmdline_parse();
 }
 else {
   _url_parse();
 }
-_overrides_set();
+await _overrides_set();
 _config_show();
 app_opts = [
   target_directory,
