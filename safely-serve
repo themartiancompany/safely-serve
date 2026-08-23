@@ -97,11 +97,6 @@ const
   _pwd =
     _libcrash._pwd;
 /* global
-     _require */
-const
-  _require =
-    _libcrash._require;
-/* global
      _set */
 const
   _set =
