@@ -80,7 +80,7 @@
     "os":
       "npm:os-browserify@^0.3.0",
     "serve":
-      "^10.0.2"
+      "^14.2.6"
   },
   "type":
     "module",
