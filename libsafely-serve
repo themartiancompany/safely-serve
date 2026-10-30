@@ -369,8 +369,8 @@ async function
         _ssl_cert
       ];
     _cert_gen_opts_str =
-      " ".join(
-        _cert_gen_opts);
+      _cert_gen_opts.join(
+        " ");
     _msg =
       `Running 'cert-gen' ` +
       `options '${_cert_gen_opts_str}'.`;
