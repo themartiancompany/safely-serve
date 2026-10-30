@@ -47,10 +47,20 @@ const
   _dirname =
     _libcrash._dirname;
 /* global
+     _echo */
+const
+  _echo =
+    _libcrash._echo;
+/* global
      _file_exists */
 const
   _file_exists =
     _libcrash._file_exists;
+/* global
+     _global_get */
+const
+  _global_get =
+    _libcrash._global_get;
 /* global
      _mkdir */
 const
@@ -399,6 +409,19 @@ async function
       _ssl_pass,
       _port_switching_disabled
     ];
+  _msg =
+    "Running serve with options:";
+  _msg_info(
+    _msg);
+  const
+    _global =
+      _global_get();
+  const
+    _quiet =
+      _global[
+        "quiet"];
+  _echo(
+    _serve_opts);
   _serve.apply(
     null,
     _serve_opts);

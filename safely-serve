@@ -42,6 +42,11 @@ const
     await import(
       "libcrash-js");
 /* global
+     _argv_get */
+const
+  _argv_get =
+    _libcrash._argv_get;
+/* global
      _argv_url_get */
 const
   _argv_url_get =
@@ -342,6 +347,13 @@ function
     "dir",
     "");
   /* global
+       run_mode:
+         writable */
+  _set(
+    "run",
+    "mode",
+    "");
+  /* global
        quiet:
          writable */
   const
@@ -514,6 +526,10 @@ function
     "organization",
     "name",
     "Index Development Team");
+  _override_set(
+    "run",
+    "mode",
+    "native");
 }
 
 function
@@ -525,6 +541,7 @@ function
       `${app_name} configuration:`,
       `      Runtime environment:   ${runtime_environment}`,
       `         Target directory:   ${target_directory}`,
+      `                 Run mode:   ${run_mode}`,
       `          Serve options:`,
       `              Listen URIs:   ${listen_uris}`,
       `              Target port:   ${target_port}`,
@@ -575,6 +592,11 @@ function
       "  safely-serve",
       "    [options]",
       "    <target-directory>",
+      "",
+      "  options:",
+      "",
+      "     -r, --run-mode=MODE            It can be 'native' or 'spawn'.",
+      `                                    Default: '${run_mode}'`,
       "",
       "  serve options:",
       "     -l, --listen=URI               Specify a URI endpoint on",
@@ -782,9 +804,23 @@ function
 
 async function 
   _cmdline_parse() {
+  let
+    _verbose;
+  const
+    _argv_args = {
+      "booleans": [
+        "h",
+        "help",
+        "v",
+        "verbose"
+      ],
+      "string":
+        true
+    };
   const
     _argv =
-      await _yargv_get();
+      await _argv_get(
+        _argv_args);
   quiet = 
     "y";
   runtime_environment =
@@ -796,6 +832,27 @@ async function
   target_directory =
     _target_directory_auto_detect(
       _argv);
+  if ( _argv[
+         "v"] ) {
+    _verbose =
+      _argv[
+        "v"];
+  }
+  if ( _argv[
+         "verbose"] ) {
+    _verbose =
+      _argv[
+        "verbose"];
+  }
+  if ( _verbose ) {
+    quiet =
+      "n";
+  }
+  run_mode =
+    _opt_read(
+      _argv,
+      "r",
+      "run-mode");
   listen_uris =
     _opt_read(
       _argv,
