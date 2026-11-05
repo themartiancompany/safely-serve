@@ -52,6 +52,11 @@ const
   _echo =
     _libcrash._echo;
 /* global
+     _echo2 */
+const
+  _echo2 =
+    _libcrash._echo2;
+/* global
      _file_exists */
 const
   _file_exists =
@@ -66,6 +71,11 @@ const
 const
   _mkdir =
     _libcrash._mkdir;
+/* global
+     _msg_error */
+const
+  _msg_error =
+    _libcrash._msg_error;
 /* global
      _msg_info */
 const

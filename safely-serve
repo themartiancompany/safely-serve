@@ -106,11 +106,6 @@ const
 const
   _set =
     _libcrash._set;
-/* global
-     _yargv_get */
-const
-  _yargv_get =
-    _libcrash._yargv_get;
 
 const
   _libsafely_serve_module =
@@ -700,7 +695,11 @@ function
       _argv[
         "h"];
   if ( _help_display ) {
-    quiet =
+    const
+      _global =
+        _global_get();
+    _global[
+      "quiet"] =
       "n";
     _overrides_set();
     _usage(
@@ -711,13 +710,18 @@ function
 function
   _cmdline_parse_debug(
     _argv) {
-  debug_enabled =
-    _opt_read(
-      _argv,
-      "d",
-      "debug");
-  if ( debug_enabled ) {
-    quiet =
+  const
+    _debug_enabled =
+      _opt_read(
+        _argv,
+        "d",
+        "debug");
+  if ( _debug_enabled ) {
+    const
+      _global =
+        _global_get();
+    _global[
+      "quiet"] =
       "n";
   }
 }
@@ -821,17 +825,25 @@ async function
     _argv =
       await _argv_get(
         _argv_args);
-  quiet = 
+  const
+    _global =
+      _global_get();
+  _global[
+    "quiet"] = 
     "y";
-  runtime_environment =
-    "node";
+  _set(
+    "runtime",
+    "environment",
+    "node");
   _cmdline_parse_debug(
     _argv);
   _cmdline_parse_help(
     _argv);
-  target_directory =
+  _set(
+    "target",
+    "directory",
     _target_directory_auto_detect(
-      _argv);
+      _argv));
   if ( _argv[
          "v"] ) {
     _verbose =
@@ -845,140 +857,193 @@ async function
         "verbose"];
   }
   if ( _verbose ) {
-    quiet =
+    _global[
+      "quiet"] =
       "n";
   }
-  run_mode =
+  _set(
+    "run",
+    "mode",
     _opt_read(
       _argv,
       "r",
-      "run-mode");
-  listen_uris =
+      "run-mode"));
+  _set(
+    "listen",
+    "uris",
     _opt_read(
       _argv,
       "l",
       "listen",
-      "list");
-  target_port =
+      "list"));
+  _set(
+    "target",
+    "port",
     _opt_read(
       _argv,
       "p",
-      "port");
-  target_port =
+      "port"));
+  _set(
+    "target",
+    "port",
     _opt_read(
       _argv,
       "p",
-      "port");
-  index_redirect =
+      "port"));
+  _set(
+    "index",
+    "redirect",
     _opt_read(
       _argv,
       "s",
-      "single");
-  config_file =
+      "single"));
+  _set(
+    "config",
+    "file",
     _opt_read(
       _argv,
       "c",
-      "config");
-  logging_disabled =
+      "config"));
+  _set(
+    "logging",
+    "disabled",
     _opt_read(
       _argv,
       "L",
-      "no-request-logging");
-  cors_enabled =
+      "no-request-logging"));
+  _set(
+    "cors",
+    "enabled",
     _opt_read(
       _argv,
       "C",
-      "cors");
-  clipboard_disabled =
+      "cors"));
+  _set(
+    "clipboard",
+    "disabled",
     _opt_read(
       _argv,
       "n",
-      "no-clipboard");
-  compression_disabled =
+      "no-clipboard"));
+  _set(
+    "compression",
+    "disabled",
     _opt_read(
       _argv,
       "u",
-      "no-compression");
-  etag_disabled =
+      "no-compression"));
+  _set(
+    "etag",
+    "disabled",
     _opt_read(
       _argv,
       "e",
-      "no-etag");
-  symlinks_enabled =
+      "no-etag"));
+  _set(
+    "symlinks",
+    "enabled",
     _opt_read(
       _argv,
       "S",
-      "symlinks");
-  ssl_cert =
+      "symlinks"));
+  _set(
+    "ssl",
+    "cert",
     _opt_read(
       _argv,
       "I",
-      "ssl-cert");
-  ssl_key =
+      "ssl-cert"));
+  _set(
+    "ssl",
+    "key",
     _opt_read(
       _argv,
       "i",
-      "ssl-key");
-  ssl_pass =
+      "ssl-key"));
+  _set(
+    "ssl",
+    "pass",
     _opt_read(
       _argv,
       "k",
-      "ssl-pass");
-  keys_length =
+      "ssl-pass"));
+  _set(
+    "keys",
+    "length",
     _opt_read(
       _argv,
       "l",
-      "keys-length");
-  validity_min =
+      "keys-length"));
+  _set(
+    "validity",
+    "min",
     _opt_read(
       _argv,
       "B",
-      "validity-min");
-  validity_max =
+      "validity-min"));
+  _set(
+    "validity",
+    "max",
     _opt_read(
       _argv,
       "E",
-      "validity-max");
-  domain_name =
+      "validity-max"));
+  _set(
+    "domain",
+    "name",
     _opt_read(
       _argv,
       "D",
-      "domain-name");
-  country_name =
+      "domain-name"));
+  _set(
+    "country",
+    "name",
     _opt_read(
       _argv,
       "C",
-      "country-name");
-  state_name =
+      "country-name"));
+  _set(
+    "state",
+    "name",
     _opt_read(
       _argv,
       "S",
-      "state-name");
-  locality_name =
+      "state-name"));
+  _set(
+    "locality",
+    "name",
     _opt_read(
       _argv,
       "L",
-      "locality-name");
-  organization_name =
+      "locality-name"));
+  _set(
+    "organization",
+    "name",
     _opt_read(
       _argv,
       "O",
-      "organization-name");
-  organization_unit =
+      "organization-name"));
+  _set(
+    "organization",
+    "unit",
     _opt_read(
       _argv,
       "U",
-      "organization-unit");
-  serial_number =
+      "organization-unit"));
+  _set(
+    "serial",
+    "number",
     _opt_read(
       _argv,
       "X",
-      "serial-number");
-  cache_dir =
+      "serial-number"));
+  _set(
+    "cache",
+    "dir",
     _opt_read(
       _argv,
       "W",
-      "cache-dir");
+      "cache-dir"));
 }
 
 function
@@ -988,25 +1053,35 @@ function
   const
     _argv =
       _argv_url_get();
-  target_directory =
+  _set(
+    "target",
+    "directory",
     _argv[
       "target_directory"][
-        0];
-  listen_uris =
+        0]);
+  _set(
+    "listen",
+    "uris",
     _argv[
-      "listen"];
-  target_port =
+      "listen"]);
+  _set(
+    "target",
+    "port",
     _argv[
       "port"][
-        0];
-  index_redirect =
+        0]);
+  _set(
+    "index",
+    "redirect",
     _argv[
       "single"][
-        0];
-  config_file =
+        0]);
+  _set(
+    "config",
+    "file",
     _argv[
       "config_file"][
-        0];
+        0]);
   compression_disabled =
     _argv[
       "no_compression"][
@@ -1131,6 +1206,23 @@ app_opts = [
   organization_name,
   organization_unit
 ];
-_safely_serve.apply(
-  null,
-  app_opts);
+try {
+  _safely_serve.apply(
+    null,
+    app_opts);
+}
+catch(
+  _error) {
+  const
+    _msg =
+      "Error running '_safely_serve' with arguments:";
+  _msg_error(
+    _msg,
+    0);
+  _echo2(
+    app_opts);
+  _echo2(
+    _error);
+  _exit(
+    1);
+}
