@@ -94,6 +94,8 @@
     { "safely-serve":
         "safely-serve" },
   "overrides": {
+    "compression":
+      "^1.8.2",
     "eslint":
       "^10.14.0",
     "minimatch":
