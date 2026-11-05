@@ -53,9 +53,7 @@ export default defineConfig([
         "prefer-const":
           "error" },
     files:
-      [ "**/*.{js,mjs,cjs}",
-        `**/${_project}*`,
-        `**/lib${_project}` ],
+      [ "**/*.{js,mjs,cjs}" ],
     plugins:
       { js },
     extends:
@@ -72,7 +70,10 @@ export default defineConfig([
         "prefer-const":
           "error" },
     files:
-      [ "**/*.{js,cjs}" ],
+      [ "**/*.{js,cjs}",
+        `**/${_project}*`,
+        `**/lib${_project}`
+      ],
     languageOptions:
       { sourceType:
           "commonjs" } },
