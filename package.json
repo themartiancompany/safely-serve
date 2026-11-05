@@ -65,6 +65,8 @@
       "^10.0.1",
     "globals":
       "^17.3.0",
+    "minimatch":
+      "^11.0.4",
     "webpack":
       "^5.109.2",
     "webpack-cli":
@@ -90,6 +92,8 @@
     { "safely-serve":
         "safely-serve" },
   "overrides": {
+    "eslint":
+      "^10.14.0",
     "safely-serve":
       "./libsafely-serve"
   },
