@@ -144,7 +144,7 @@ function
         _data) {
       _data =
         _data.toString();
-      console.log(
+      _echo(
         _data);
       /* global
            _output */
@@ -248,6 +248,7 @@ function
       "--ssl-pass",
       ssl_pass);
   }
+  return _cmd_args;
 }
 
 function
@@ -292,6 +293,16 @@ function
         _ssl_key,
         _ssl_pass,
         _port_switching_disabled);
+  const
+    _cmd_args_string =
+      _cmd_args.join(
+        " ");
+  const
+    _msg =
+      "Running 'serve' using a complicated " +
+      `spawn, '${_cmd} ${_cmd_args_string}'.`;
+  _msg_info(
+    _msg);
   const
     _serve_process =
       _spawn(
@@ -391,7 +402,7 @@ async function
       _cert_gen_opts);
   }
   const
-    _serve_opts = [
+    _serve_args = [
       _target_directory,
       _listen_uris,
       _target_port,
@@ -410,7 +421,7 @@ async function
       _port_switching_disabled
     ];
   _msg =
-    "Running serve with options:";
+    "Running '_serve' function with arguments:";
   _msg_info(
     _msg);
   const
@@ -420,11 +431,29 @@ async function
     _quiet =
       _global[
         "quiet"];
-  _echo(
-    _serve_opts);
-  _serve.apply(
-    null,
-    _serve_opts);
+  if ( _quiet == "n" ) {
+    _echo(
+      _serve_args);
+  }
+  try {
+    _serve.apply(
+      null,
+      _serve_args);
+  }
+  catch(
+    _error) {
+    _msg =
+      "Error running '_serve' " +
+      "with arguments:";
+    _msg_error(
+      _msg,
+      0);
+    _echo2(
+      _serve_args);
+    _echo2(
+      _error);
+    throw _error;
+  }
 }
 
 export {
