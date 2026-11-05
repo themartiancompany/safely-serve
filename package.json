@@ -77,6 +77,8 @@
       "npm:crash-js@^1000000000000018.1000000000000001.1000000000000001",
     "cert-tools":
       "^0.0.25",
+    "compression":
+      "^1.8.2",
     "js-sha256":
       "^0.11.1",
     "os":
@@ -94,6 +96,8 @@
   "overrides": {
     "eslint":
       "^10.14.0",
+    "minimatch":
+      "^11.0.4",
     "safely-serve":
       "./libsafely-serve"
   },
