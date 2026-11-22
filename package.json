@@ -2,7 +2,7 @@
   "name":
     "safely-serve",
   "version":
-    "0.0.25",
+    "0.0.26",
   "description":
     "Serve extension which auto-generates self-signed OpenSSL certificates' at runtime",
   "funding": {
@@ -58,7 +58,7 @@
   },
   "devDependencies": {
     "crash-js-webpack":
-      "^0.0.82",
+      "^0.0.88",
     "eslint":
       "^10.14.0",
     "@eslint/js":
@@ -74,9 +74,9 @@
   },
   "dependencies": {
     "libcrash-js":
-      "npm:crash-js@^1000000000000018.1000000000000001.1000000000000001",
+      "npm:crash-js@^1000000000000025.1000000000000001.1000000000000001",
     "cert-tools":
-      "^0.0.25",
+      "^0.0.26",
     "compression":
       "^1.8.2",
     "js-sha256":
